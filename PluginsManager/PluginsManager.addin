@@ -1,0 +1,11 @@
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>IS</Name>
+		<Assembly>PluginsManager\PluginsManager.dll</Assembly>
+		<AddInId>4AB79F62-F346-4AC4-8D98-A1345DA39693</AddInId>
+		<FullClassName>PluginsManager.App</FullClassName>
+		<Text>IS</Text>
+		<VendorId>MyId</VendorId>
+		<VendorDescription></VendorDescription>
+	</AddIn>
+</RevitAddIns>

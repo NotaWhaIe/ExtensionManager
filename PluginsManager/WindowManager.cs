@@ -10,7 +10,7 @@ namespace PluginsManager
     public class WindowManager
     {
         public ExternalEvent External_event {  get; set; }  
-        public IS_PluginsManagerForm Window {  get; set; }
+        public PluginsManagerForm Window {  get; set; }
         public CommandManager Command_manager { get; set; }
         public FileManager File_manager { get; set; }
         public UIApplication UiApp { get; set; }
@@ -20,7 +20,7 @@ namespace PluginsManager
             File_manager = file_manager;
             UiApp = uiApp;
             External_event = Command_manager.External_event;
-            IS_PluginsManagerForm window = new IS_PluginsManagerForm();
+            PluginsManagerForm window = new PluginsManagerForm();
             Window = window;
             window.Text = $"Менеджер плагинов";
             window.groupBox1.Text = $"Информация";

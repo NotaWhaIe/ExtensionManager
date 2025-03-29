@@ -6,7 +6,7 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="8bd7d784-31d5-4536-9fe2-416a3dc968b8" Name="PluginsManager" Language="1033" Codepage="Windows-1252" Version="1.0.0" UpgradeCode="8bd7d784-31d5-4536-9fe2-416a2dc958b8" Manufacturer="Savelev.IA">
+  <Product Id="8bd7d784-31d5-4536-9fe2-416a3dc968b8" Name="PluginsManager" Language="1033" Codepage="Windows-1252" Version="1.0.0" UpgradeCode="8bd7d784-31d5-4536-9fe2-416a2dc958b8" Manufacturer="ilyas">
     <Package InstallerVersion="200" Compressed="yes" SummaryCodepage="Windows-1252" InstallPrivileges="limited" Languages="1033" />
     <Media Id="1" Cabinet="PluginsManager.cab" EmbedCab="yes" />
 
@@ -15,10 +15,10 @@
         <Directory Id="Autodesk" Name="Autodesk">
           <Directory Id="Revit" Name="Revit">
             <Directory Id="Addins" Name="Addins">
-              <Directory Id="INSTALLDIR" Name="2024">
+              <Directory Id="INSTALLDIR" Name="2021">
 
-                <Component Id="Component.IS_PluginsManager.addin_2097765034" Guid="8bd7d784-31d5-4536-9fe2-416aff995ac2">
-                  <File Id="IS_PluginsManager.addin_2097765034" Source="..\IS_PluginsManager\IS_PluginsManager.addin" />
+                <Component Id="Component.PluginsManager.addin_2868281738" Guid="8bd7d784-31d5-4536-9fe2-416ae5586148">
+                  <File Id="PluginsManager.addin_2868281738" Source="..\PluginsManager\PluginsManager.addin" />
                   <RemoveFolder Id="INSTALLDIR" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -26,10 +26,10 @@
                   </RegistryKey>
                 </Component>
 
-                <Directory Id="SUBFOLDER24" Name="IS_PluginsManager">
+                <Directory Id="SUBFOLDER24" Name="PluginsManager">
 
-                  <Component Id="Component.IS_PluginsManager.dll_4292206506" Guid="8bd7d784-31d5-4536-9fe2-416a796e552b">
-                    <File Id="IS_PluginsManager.dll_4292206506" Source="..\IS_PluginsManager\bin\Build\IS_PluginsManager.dll" />
+                  <Component Id="Component.PluginsManager.dll_549866378" Guid="8bd7d784-31d5-4536-9fe2-416a9818814c">
+                    <File Id="PluginsManager.dll_549866378" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
                     <RemoveFolder Id="SUBFOLDER24" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -78,8 +78,8 @@
     <Feature Id="Plugins20Manager" Title="Plugins Manager" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.IS_PluginsManager.addin_2097765034" />
-      <ComponentRef Id="Component.IS_PluginsManager.dll_4292206506" />
+      <ComponentRef Id="Component.PluginsManager.addin_2868281738" />
+      <ComponentRef Id="Component.PluginsManager.dll_549866378" />
       <ComponentRef Id="Autodesk" />
       <ComponentRef Id="Revit" />
       <ComponentRef Id="Addins" />

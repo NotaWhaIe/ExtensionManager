@@ -25,44 +25,28 @@ namespace PluginsManager
             PushButtonData buttonDataFamilyCatalog = new PushButtonData("Plugins\nmanager", "Plugins\nmanager", assemblyPath, "PluginsManager.PluginManager");
             var buttonFamilyCatalog = generalRibbonPanel.AddItem(buttonDataFamilyCatalog) as PushButton;
             //buttonFamilyCatalog.LargeImage = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot32.png", UriKind.RelativeOrAbsolute));
-            //buttonFamilyCatalog.Image = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot16.png", UriKind.RelativeOrAbsolute));//
-
+            //buttonFamilyCatalog.Image = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot16.png", UriKind.RelativeOrAbsolute));
             string imageName32 = "PluginsManager.Resources.robot32.png";
             string imageName16 = "PluginsManager.Resources.robot16.png";
             buttonFamilyCatalog.LargeImage = GetImageFromResources(imageName32);
             buttonFamilyCatalog.Image = GetImageFromResources(imageName16);
-
-            //Assembly assembly = Assembly.GetExecutingAssembly();
-            //string[] resourceNames = assembly.GetManifestResourceNames();
-
-            //foreach (string name in resourceNames)
-            //{
-            //    Console.WriteLine(name); // Проверьте, есть ли ваш ресурс в этом списке
-            //    TaskDialog.Show("a", name);
-            //}
             return Result.Succeeded;
         }
         public BitmapImage GetImageFromResources(string resourceName)
         {
-            // Загружаем текущую сборку
             Assembly assembly = Assembly.GetExecutingAssembly();
-            
-
-            // Получаем поток ресурса
             using (Stream stream = assembly.GetManifestResourceStream($"{resourceName}"))
             {
                 if (stream == null)
                 {
                     throw new ArgumentException($"Ресурс '{resourceName}' не найден.");
                 }
-
-                // Создаем BitmapImage из потока
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.StreamSource = stream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Обязательно для освобождения потока
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
-                bitmap.Freeze(); // Делает объект потокобезопасным
+                bitmap.Freeze();
                 return bitmap;
             }
         }

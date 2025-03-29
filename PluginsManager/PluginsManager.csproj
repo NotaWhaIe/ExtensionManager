@@ -32,6 +32,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2021\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -88,15 +89,14 @@
     <None Include="PluginsManager.addin" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\robot16-.png" />
-    <Resource Include="Resources\robot32-.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\folder32.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\robot16.png" />
     <EmbeddedResource Include="Resources\robot32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\github32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -27,6 +26,8 @@ namespace PluginsManager
             window.tabControl.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Regular);
             window.toolStripButton1.Click += (s, e) => Change_Folder();
             window.toolStripButton1.Text  = "Выбрать папку";
+            window.toolStripButton2.Click += (s, e) => OpenGitHub();
+            window.toolStripButton2.Text = "GitHub";
             window.richTextBox1.LinkClicked += RichTextBox1_LinkClicked;
             CreateTabs();
             window.ShowDialog();
@@ -57,11 +58,14 @@ namespace PluginsManager
         }
         private void RichTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            // Открываем ссылку в браузере
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.LinkText)
             {
                 UseShellExecute = true // Используем стандартный браузер
             });
+        }
+        private void OpenGitHub()
+        {
+            System.Diagnostics.Process.Start("https://github.com/i-savelev/PluginsManager");
         }
         public void CreateTabs()
         {

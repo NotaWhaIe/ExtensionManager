@@ -1,7 +1,10 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Autodesk.Windows;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
@@ -18,12 +21,20 @@ namespace PluginsManager
 
         public Result OnStartup(UIControlledApplication application)
         {
+            string tabName = "Add-Ins";
+            //IEnumerable<RibbonPanel> panels = application.GetRibbonPanels(tabName);
+            string panelName = "Plugins Manager";
+            //RibbonPanel panel = panels.FirstOrDefault(p => p.Name.Equals(panelName, StringComparison.OrdinalIgnoreCase));
+            
+            Autodesk.Revit.UI.RibbonPanel panel = application.CreateRibbonPanel("Plugins Manager");
+            
+            //var tab = ComponentManager.Ribbon.FindTab("Modify");
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            string tabName = "IS";
-            application.CreateRibbonTab(tabName);
-            Autodesk.Revit.UI.RibbonPanel generalRibbonPanel = application.CreateRibbonPanel(tabName, "Plugins manager");
+            //string tabName = "IS";
+            //application.CreateRibbonTab(tabName);
+            //Autodesk.Revit.UI.RibbonPanel generalRibbonPanel = application.CreateRibbonPanel(tabName, "Plugins manager");
             PushButtonData buttonDataFamilyCatalog = new PushButtonData("Plugins\nmanager", "Plugins\nmanager", assemblyPath, "PluginsManager.PluginManager");
-            var buttonFamilyCatalog = generalRibbonPanel.AddItem(buttonDataFamilyCatalog) as PushButton;
+            var buttonFamilyCatalog = panel.AddItem(buttonDataFamilyCatalog) as PushButton;
             //buttonFamilyCatalog.LargeImage = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot32.png", UriKind.RelativeOrAbsolute));
             //buttonFamilyCatalog.Image = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot16.png", UriKind.RelativeOrAbsolute));
             string imageName32 = "PluginsManager.Resources.robot32.png";

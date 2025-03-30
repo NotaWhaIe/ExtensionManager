@@ -66,6 +66,7 @@ namespace PluginsManager
         private void OpenGitHub()
         {
             System.Diagnostics.Process.Start("https://github.com/i-savelev/PluginsManager");
+            Window.Close();
         }
         public void CreateTabs()
         {
@@ -84,7 +85,6 @@ namespace PluginsManager
                     {
                         CreateNewTab(tab.Key);
                     }
-
                 }
             }
         }

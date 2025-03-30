@@ -11,14 +11,15 @@ namespace Build
             string addin_file_24 = @"c:\Users\ilyas\Documents\GitHub\PluginsManager\PluginsManager\PluginsManager.addin";
             string subfolder_name = "PluginsManager";
             string source_dll_folder = @"c:\Users\ilyas\Documents\GitHub\PluginsManager\PluginsManager\bin\Build\";
-            var feature24 = new Feature("Plugins Manager");
-
-            feature24.Condition = new FeatureCondition("PROP1 = 1", level: 1);
+            var feature24 = new Feature("Plugins Manager")
+            {
+                Condition = new FeatureCondition("PROP1 = 1", level: 1)
+            };
 
             // Создаем директорию для AppData\Roaming
             var project = new Project("PluginsManager",
                 new Dir(@"[AppDataFolder]\Autodesk\Revit\Addins\2021", 
-                    new WixSharp.File(feature24, addin_file_24),    
+                    new File(feature24, addin_file_24),    
                     new Dir(new Id("SUBFOLDER24"), subfolder_name,
                         new Files(feature24, source_dll_folder + "*.*")
                     )

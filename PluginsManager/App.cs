@@ -1,19 +1,16 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Windows;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 
 namespace PluginsManager
 {
     internal class App : IExternalApplication
     {
-        static AddInId addinId = new AddInId(new Guid("4AB79F62-F346-4AC4-8D98-A1345DA39693"));
+        private static AddInId addinId = new AddInId(new Guid("4AB79F62-F346-4AC4-8D98-A1345DA39693"));
+
         public Result OnShutdown(UIControlledApplication application)
         {
             return Result.Succeeded;
@@ -21,26 +18,18 @@ namespace PluginsManager
 
         public Result OnStartup(UIControlledApplication application)
         {
-            string tabName = "Add-Ins";
-            //IEnumerable<RibbonPanel> panels = application.GetRibbonPanels(tabName);
-            string panelName = "Plugins Manager";
-            //RibbonPanel panel = panels.FirstOrDefault(p => p.Name.Equals(panelName, StringComparison.OrdinalIgnoreCase));
+            RibbonPanel panel = application.CreateRibbonPanel("Plugins Manager");
             
-            Autodesk.Revit.UI.RibbonPanel panel = application.CreateRibbonPanel("Plugins Manager");
-            
-            //var tab = ComponentManager.Ribbon.FindTab("Modify");
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            //string tabName = "IS";
-            //application.CreateRibbonTab(tabName);
-            //Autodesk.Revit.UI.RibbonPanel generalRibbonPanel = application.CreateRibbonPanel(tabName, "Plugins manager");
-            PushButtonData buttonDataFamilyCatalog = new PushButtonData("Plugins\nmanager", "Plugins\nmanager", assemblyPath, "PluginsManager.PluginManager");
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+            var buttonDataFamilyCatalog = new PushButtonData("Plugins\nmanager", "Plugins\nmanager", assemblyPath, "PluginsManager.PluginManager");
             var buttonFamilyCatalog = panel.AddItem(buttonDataFamilyCatalog) as PushButton;
-            //buttonFamilyCatalog.LargeImage = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot32.png", UriKind.RelativeOrAbsolute));
-            //buttonFamilyCatalog.Image = new BitmapImage(new Uri(@"/PluginsManager;component/Resources/robot16.png", UriKind.RelativeOrAbsolute));
+
             string imageName32 = "PluginsManager.Resources.robot32.png";
             string imageName16 = "PluginsManager.Resources.robot16.png";
+
             buttonFamilyCatalog.LargeImage = GetImageFromResources(imageName32);
             buttonFamilyCatalog.Image = GetImageFromResources(imageName16);
+
             return Result.Succeeded;
         }
         public BitmapImage GetImageFromResources(string resourceName)
@@ -48,16 +37,19 @@ namespace PluginsManager
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream($"{resourceName}"))
             {
-                if (stream == null)
+                if (stream is null)
                 {
                     throw new ArgumentException($"Ресурс '{resourceName}' не найден.");
                 }
-                BitmapImage bitmap = new BitmapImage();
+
+                var bitmap = new BitmapImage();
+
                 bitmap.BeginInit();
                 bitmap.StreamSource = stream;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
                 bitmap.Freeze();
+
                 return bitmap;
             }
         }

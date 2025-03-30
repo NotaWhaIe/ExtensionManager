@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 using System;
 
-
 namespace PluginsManager
 {
     public class Handler : IExternalEventHandler
@@ -25,10 +24,11 @@ namespace PluginsManager
             }
             finally
             {
-                _command_manager.External_event?.Dispose();
-                _command_manager.External_event = null;
+                _command_manager.ExternalEvent?.Dispose();
+                _command_manager.ExternalEvent = null;
             }
         }
+
         public string GetName()
         {
             return "My Dynamic External Event Handler";

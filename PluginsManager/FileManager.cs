@@ -10,10 +10,12 @@ namespace PluginsManager
         public string FolderPath { get; set; }
         public string ExceptionTabs = "";
         public string Post = "user";
+
         public FileManager()
         {
             GetSettingsFromExistConfigFile();
         }
+
         private string GetConfigFilePath()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -26,17 +28,17 @@ namespace PluginsManager
         }
         private void GetSettingsFromExistConfigFile()
         {
-            string configFilePath = GetConfigFilePath();
+            var configFilePath = GetConfigFilePath();
             if (!File.Exists(configFilePath))
             {
                 SetPathToConfigFile();
             }
             else
             {
-                XDocument xml_doc = XDocument.Load(configFilePath);
-                string folderPath = xml_doc.Element("Settings")?.Element("FolderPath")?.Value ?? "";
-                string exceptionTabs = xml_doc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? "";
-                string post = xml_doc.Element("Settings")?.Element("Post")?.Value ?? "";
+                XDocument xmlDoc = XDocument.Load(configFilePath);
+                string folderPath = xmlDoc.Element("Settings")?.Element("FolderPath")?.Value ?? string.Empty;
+                string exceptionTabs = xmlDoc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? string.Empty;
+                string post = xmlDoc.Element("Settings")?.Element("Post")?.Value ?? string.Empty;
                 FolderPath = folderPath;
                 ExceptionTabs = exceptionTabs;
                 Post = post;
@@ -44,15 +46,15 @@ namespace PluginsManager
         }
         public bool SetPathToConfigFile()
         {
-            string configFilePath = GetConfigFilePath();
+            var configFilePath = GetConfigFilePath();
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 if (File.Exists(configFilePath))
                 {
-                    XDocument xml_doc = XDocument.Load(configFilePath);
-                    string tabConfig = xml_doc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? "";
-                    string post = xml_doc.Element("Settings")?.Element("Post")?.Value ?? "";
+                    XDocument xmlDoc = XDocument.Load(configFilePath);
+                    string tabConfig = xmlDoc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? string.Empty;
+                    string post = xmlDoc.Element("Settings")?.Element("Post")?.Value ?? string.Empty;
                     ExceptionTabs = tabConfig;
                     Post = post;
                 }

@@ -13,35 +13,37 @@ namespace PluginsManager
     public class CommandManager
     {
         public UIApplication UiApp {  get; set; }
-        public List<Type> Commands  = new List<Type>();
-        public List<Command> All_commands = new List<Command>();
-        public Dictionary<string, List<Command>> Commands_dict = new Dictionary<string, List<Command>>();
-        public string Folder_path { get; set; }
-        public ExternalEvent External_event { get; set; }
-        public CommandManager(UIApplication uiApp, string folder_path)
+        public List<Type> AllTypes = new List<Type>();
+        public List<Command> AllCommands = new List<Command>();
+        public Dictionary<string, List<Command>> CommandsDictionary = new Dictionary<string, List<Command>>();
+        public string FolderPath { get; set; }
+        public ExternalEvent ExternalEvent { get; set; }
+
+        public CommandManager(UIApplication uiApp, string folderPath)
         {
             UiApp = uiApp;
-            Folder_path = folder_path;
-            GetExternalCommandsFromAssembly(Folder_path);
+            FolderPath = folderPath;
+            GetExternalCommandsFromAssembly(FolderPath);
             Handler eventHandler = new Handler(this);
-            ExternalEvent external_event = ExternalEvent.Create(eventHandler);
-            External_event = external_event;
-        }
-        public void Refrash(string folder_path)
-        {
-            Commands.Clear();
-            All_commands.Clear();
-            Commands_dict.Clear();
-            Folder_path = folder_path;
-            GetExternalCommandsFromAssembly(Folder_path);
-            Handler eventHandler = new Handler(this);
-            ExternalEvent external_event = ExternalEvent.Create(eventHandler);
-            External_event = external_event;
+            ExternalEvent externalEvent = ExternalEvent.Create(eventHandler);
+            ExternalEvent = externalEvent;
         }
 
-        public void RunCommand(string command_name)
+        public void Refresh(string folderPath)
         {
-            var commandType = Commands.FirstOrDefault(x => x.FullName == command_name);
+            AllTypes.Clear();
+            AllCommands.Clear();
+            CommandsDictionary.Clear();
+            FolderPath = folderPath;
+            GetExternalCommandsFromAssembly(FolderPath);
+            Handler eventHandler = new Handler(this);
+            ExternalEvent externalEvent = ExternalEvent.Create(eventHandler);
+            ExternalEvent = externalEvent;
+        }
+
+        public void RunCommand(string commandName)
+        {
+            var commandType = AllTypes.FirstOrDefault(x => x.FullName == commandName);
             IExternalCommand commandInstance = (IExternalCommand)Activator.CreateInstance(commandType);
             ExternalCommandData commandData = Create(UiApp);
             string message = string.Empty;
@@ -49,7 +51,7 @@ namespace PluginsManager
             Result result = commandInstance.Execute(commandData, ref message, elements);
         }
 
-        public static ExternalCommandData Create(UIApplication uiApplication)
+        public ExternalCommandData Create(UIApplication uiApplication)
         {
             // Находим тип ExternalCommandData
             Type externalCommandDataType = typeof(ExternalCommandData);
@@ -59,7 +61,7 @@ namespace PluginsManager
                 .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance)
                 .FirstOrDefault();
 
-            if (constructor == null)
+            if (constructor is null)
             {
                 throw new InvalidOperationException("Не удалось найти конструктор ExternalCommandData.");
             }
@@ -69,7 +71,7 @@ namespace PluginsManager
 
             // Устанавливаем свойство Application через рефлексию
             PropertyInfo applicationProperty = externalCommandDataType.GetProperty(
-                "Application",
+                Constants.PropertyNames.Application,
                 BindingFlags.Public | BindingFlags.Instance
             );
 
@@ -81,65 +83,90 @@ namespace PluginsManager
             {
                 throw new InvalidOperationException("Не удалось установить свойство Application.");
             }
+
             return data;
         }
 
-        public void GetExternalCommandsFromAssembly(string folderPath)
+        private void GetExternalCommandsFromAssembly(string folderPath)
         {
             try
             {
-                string[] dllFiles = Directory.GetFiles(folderPath, "*.dll");
-                foreach (string dllFile in dllFiles)
+                var dllFiles = Directory.GetFiles(folderPath, "*.dll");
+                foreach (var dllFile in dllFiles)
                 {
-                    byte[] assemblyBytes = File.ReadAllBytes(dllFile);
-                    Assembly assembly = Assembly.Load(assemblyBytes);
+                    var assemblyBytes = File.ReadAllBytes(dllFile);
+                    var assembly = Assembly.Load(assemblyBytes);
+
                     IEnumerable<Type> externalCommands = assembly.GetTypes()
-                        .Where(type => typeof(IExternalCommand)
-                        .IsAssignableFrom(type) && !type.IsAbstract);
-                    Commands.AddRange(externalCommands);
-                    foreach (Type type in externalCommands)
+                        .Where(type => typeof(IExternalCommand).IsAssignableFrom(type) && !type.IsAbstract);
+
+                    AllTypes.AddRange(externalCommands);
+
+                    foreach (var type in externalCommands)
                     {
-                        FillCommandsDictAndList(type, assembly);
+                        FillCommandsDictionaryAndList(type, assembly);
                     }
                 }
-                Commands_dict = Commands_dict.OrderBy(pair => pair.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
-                foreach (var key in Commands_dict.Keys.ToList())
-                {
-                    Commands_dict[key] = Commands_dict[key].OrderBy(val => val.Cmd_name).ToList();
-                }
+
+                SortCommandsDictionary();
             }
-            catch { }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
-        public void FillCommandsDictAndList(Type type, Assembly assembly)
+        private void FillCommandsDictionaryAndList(Type type, Assembly assembly)
         {
-            string commandName = type.GetProperty("IS_NAME", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.GetValue(null)?.ToString();
-            string tabName = type.GetProperty("IS_TAB_NAME", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.GetValue(null)?.ToString();
-            string commandDescription = type.GetProperty("IS_DESCRIPTION", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.GetValue(null)?.ToString();
-            string commandImage = type.GetProperty("IS_IMAGE", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)?.GetValue(null)?.ToString();
+            // TODO: move literals to a separate static class
+            string commandName = type.GetProperty("IS_NAME", BindingFlags.Public | BindingFlags.Static)
+                ?.GetValue(null)
+                ?.ToString();
+            string tabName = type.GetProperty("IS_TAB_NAME", BindingFlags.Public | BindingFlags.Static)
+                ?.GetValue(null)
+                ?.ToString();
+            string commandDescription = type.GetProperty("IS_DESCRIPTION", BindingFlags.Public | BindingFlags.Static)
+                ?.GetValue(null)
+                ?.ToString();
+            string commandImage = type.GetProperty("IS_IMAGE", BindingFlags.Public | BindingFlags.Static)
+                ?.GetValue(null)
+                ?.ToString();
             if (tabName != null)
             {
-                Image img = null;
-                if (commandImage != null & commandImage != "")
+                Image image = null;
+                if (!string.IsNullOrEmpty(commandImage))
                 {
                     using (Stream stream = assembly.GetManifestResourceStream(commandImage))
                     {
                         if (stream != null)
                         {
-                            img = Image.FromStream(stream);
+                            image = Image.FromStream(stream);
                         }
                     }
                 }
-                Command cmd = new Command(tabName, type.FullName, commandName, commandDescription, img);
-                All_commands.Add(cmd);
-                if (!Commands_dict.ContainsKey(tabName))
+
+                var command = new Command(tabName, type.FullName, commandName, commandDescription, image);
+                AllCommands.Add(command);
+                if (!CommandsDictionary.ContainsKey(tabName))
                 { 
-                    Commands_dict.Add(tabName, new List<Command>() { cmd });
+                    CommandsDictionary.Add(tabName, new List<Command> { command });
                 }
                 else
                 {
-                    Commands_dict[tabName].Add(cmd);
+                    CommandsDictionary[tabName].Add(command);
                 } 
+            }
+        }
+
+        private void SortCommandsDictionary()
+        {
+            CommandsDictionary = CommandsDictionary
+                    .OrderBy(pair => pair.Key)
+                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            foreach (var key in CommandsDictionary.Keys.ToList())
+            {
+                CommandsDictionary[key] = CommandsDictionary[key].OrderBy(val => val.CmdName).ToList();
             }
         }
     }

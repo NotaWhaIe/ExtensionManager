@@ -71,7 +71,7 @@ namespace PluginsManager
 
             // Устанавливаем свойство Application через рефлексию
             PropertyInfo applicationProperty = externalCommandDataType.GetProperty(
-                Constants.PropertyNames.Application,
+                Const.PropertyNames.Application,
                 BindingFlags.Public | BindingFlags.Instance
             );
 
@@ -107,33 +107,32 @@ namespace PluginsManager
                         FillCommandsDictionaryAndList(type, assembly);
                     }
                 }
-
                 SortCommandsDictionary();
             }
-            catch(Exception)
+            catch
             {
-                throw;
+                
             }
         }
 
         private void FillCommandsDictionaryAndList(Type type, Assembly assembly)
         {
             // TODO: move literals to a separate static class
-            string commandName = type.GetProperty("IS_NAME", BindingFlags.Public | BindingFlags.Static)
+            string commandName = type.GetProperty(Const.DllFields.Name, BindingFlags.Public | BindingFlags.Static)
                 ?.GetValue(null)
                 ?.ToString();
-            string tabName = type.GetProperty("IS_TAB_NAME", BindingFlags.Public | BindingFlags.Static)
+            string tabName = type.GetProperty(Const.DllFields.TabName, BindingFlags.Public | BindingFlags.Static)
                 ?.GetValue(null)
                 ?.ToString();
-            string commandDescription = type.GetProperty("IS_DESCRIPTION", BindingFlags.Public | BindingFlags.Static)
+            string commandDescription = type.GetProperty(Const.DllFields.Description, BindingFlags.Public | BindingFlags.Static)
                 ?.GetValue(null)
                 ?.ToString();
-            string commandImage = type.GetProperty("IS_IMAGE", BindingFlags.Public | BindingFlags.Static)
+            string commandImage = type.GetProperty(Const.DllFields.Image, BindingFlags.Public | BindingFlags.Static)
                 ?.GetValue(null)
                 ?.ToString();
             if (tabName != null)
             {
-                Image image = null;
+                Image image = Properties.Resources.imgPlaceholder;
                 if (!string.IsNullOrEmpty(commandImage))
                 {
                     using (Stream stream = assembly.GetManifestResourceStream(commandImage))

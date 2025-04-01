@@ -8,8 +8,8 @@ namespace PluginsManager
    public class FileManager
     {   
         public string FolderPath { get; set; }
-        public string ExceptionTabs = "";
-        public string Post = "user";
+        public string ExceptionTabs = string.Empty;
+        public string Post = Const.ConfigFile.DefaultPost;
 
         public FileManager()
         {
@@ -19,12 +19,12 @@ namespace PluginsManager
         private string GetConfigFilePath()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pluginConfigPath = Path.Combine(appDataPath, "IS_Plugin");
+            string pluginConfigPath = Path.Combine(appDataPath, Const.ConfigFile.FolderName);
             if (!Directory.Exists(pluginConfigPath))
             {
                 Directory.CreateDirectory(pluginConfigPath);
             }
-            return Path.Combine(pluginConfigPath, "config.xml");
+            return Path.Combine(pluginConfigPath, Const.ConfigFile.Name);
         }
         private void GetSettingsFromExistConfigFile()
         {
@@ -36,9 +36,9 @@ namespace PluginsManager
             else
             {
                 XDocument xmlDoc = XDocument.Load(configFilePath);
-                string folderPath = xmlDoc.Element("Settings")?.Element("FolderPath")?.Value ?? string.Empty;
-                string exceptionTabs = xmlDoc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? string.Empty;
-                string post = xmlDoc.Element("Settings")?.Element("Post")?.Value ?? string.Empty;
+                string folderPath = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlFolderPath)?.Value ?? string.Empty;
+                string exceptionTabs = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
+                string post = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlPost)?.Value ?? string.Empty;
                 FolderPath = folderPath;
                 ExceptionTabs = exceptionTabs;
                 Post = post;
@@ -53,11 +53,12 @@ namespace PluginsManager
                 if (File.Exists(configFilePath))
                 {
                     XDocument xmlDoc = XDocument.Load(configFilePath);
-                    string tabConfig = xmlDoc.Element("Settings")?.Element("ExceptionTabs")?.Value ?? string.Empty;
-                    string post = xmlDoc.Element("Settings")?.Element("Post")?.Value ?? string.Empty;
+                    string tabConfig = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
+                    string post = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlPost)?.Value ?? string.Empty;
                     ExceptionTabs = tabConfig;
                     Post = post;
                 }
+
                 openFileDialog.Title = "Выберете папку с файлами .dll";
                 openFileDialog.CheckFileExists = false; 
                 openFileDialog.CheckPathExists = true;  
@@ -68,10 +69,10 @@ namespace PluginsManager
                 {
                     string folderPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
                     FolderPath = folderPath;
-                    XElement settings = new XElement("Settings",
-                        new XElement("FolderPath", FolderPath),
-                        new XElement("ExceptionTabs", ExceptionTabs),
-                        new XElement("Post", Post)
+                    XElement settings = new XElement(Const.ConfigFile.XmlSettings,
+                        new XElement(Const.ConfigFile.XmlFolderPath, FolderPath),
+                        new XElement(Const.ConfigFile.XmlExceptionTabs, ExceptionTabs),
+                        new XElement(Const.ConfigFile.XmlPost, Post)
                     );
                     settings.Save(configFilePath);
                     return true;

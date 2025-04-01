@@ -33,15 +33,19 @@
     </Reference>
     <Reference Include="ASCADLinkMgd">
       <HintPath>..\RevitApi\ASCADLinkMgd.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ASGeometryMgd">
       <HintPath>..\RevitApi\ASGeometryMgd.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ASObjectsMgd">
       <HintPath>..\RevitApi\ASObjectsMgd.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.SteelConnectionsDB">
       <HintPath>..\RevitApi\Autodesk.SteelConnectionsDB.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -51,6 +55,7 @@
     </Reference>
     <Reference Include="RevitAPISteel">
       <HintPath>..\RevitApi\RevitAPISteel.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\RevitApi\RevitAPIUI.dll</HintPath>
@@ -70,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="Const.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginManagerForm.cs">
@@ -112,6 +117,7 @@
     <EmbeddedResource Include="Resources\robot32.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\imgPlaceholder.png" />
     <Content Include="Resources\github32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

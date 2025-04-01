@@ -1,36 +1,76 @@
-﻿using System;
+﻿using PluginsManager;
+using System;
+using System.IO;
 using WixSharp;
 
 namespace Build
 {
     class Installer
     {
-        private static string version = "1.0.0";
+        private static string version = Properties.Version;
         static void Main(string[] args)
         {
-            string addin_file_24 = @"c:\Users\ilyas\Documents\GitHub\PluginsManager\PluginsManager\PluginsManager.addin";
-            string subfolder_name = "PluginsManager";
-            string source_dll_folder = @"c:\Users\ilyas\Documents\GitHub\PluginsManager\PluginsManager\bin\Build\";
-            var feature24 = new Feature("Plugins Manager")
+            var relativeAddinPath = Properties.AddinPath;
+            var relativeDllFolder = Properties.DllFolder;
+            var addin_file = Path.GetFullPath(relativeAddinPath);
+            var source_dll_folder = Path.GetFullPath(relativeDllFolder);
+            var subfolder_name = Properties.SubfolderName;
+
+            var feature21 = new Feature("2021")
             {
                 Condition = new FeatureCondition("PROP1 = 1", level: 1)
             };
 
-            // Создаем директорию для AppData\Roaming
-            var project = new Project("PluginsManager",
-                new Dir(@"[AppDataFolder]\Autodesk\Revit\Addins\2021", 
-                    new File(feature24, addin_file_24),    
+            var feature22 = new Feature("2022")
+            {
+                Condition = new FeatureCondition("PROP1 = 1", level: 1)
+            };
+
+            var feature23 = new Feature("2023")
+            {
+                Condition = new FeatureCondition("PROP1 = 1", level: 1)
+            };
+
+            var feature24 = new Feature("2024")
+            {
+                Condition = new FeatureCondition("PROP1 = 1", level: 1)
+            };
+
+            var project = new Project(Properties.ProjectName,
+                new Dir(new Id("INSTALLFOLDER24"), Properties.InstallDir24, 
+                    new WixSharp.File(feature24, addin_file),    
                     new Dir(new Id("SUBFOLDER24"), subfolder_name,
                         new Files(feature24, source_dll_folder + "*.*")
+                    )
+                ),
+
+                new Dir(new Id("INSTALLFOLDER23"), Properties.InstallDir23,
+                    new WixSharp.File(feature23, addin_file),
+                    new Dir(new Id("SUBFOLDER23"), subfolder_name,
+                        new Files(feature23, source_dll_folder + "*.*")
+                    )
+                ),
+
+                new Dir(new Id("INSTALLFOLDER22"), Properties.InstallDir22,
+                    new WixSharp.File(feature22, addin_file),
+                    new Dir(new Id("SUBFOLDER22"), subfolder_name,
+                        new Files(feature22, source_dll_folder + "*.*")
+                    )
+                ),
+
+                new Dir(new Id("INSTALLFOLDER21"), Properties.InstallDir21,
+                    new WixSharp.File(feature21, addin_file),
+                    new Dir(new Id("SUBFOLDER21"), subfolder_name,
+                        new Files(feature21, source_dll_folder + "*.*")
                     )
                 )
             );
 
-            project.GUID = new Guid("8BD7D784-31D5-4536-9FE2-416A2DC958B8");
-            project.OutFileName = "Plugins manager";
+            project.GUID = new Guid(Properties.Guid);
+            project.OutFileName = Properties.ProjectName;
             project.Version = new Version(version);
             project.UI = WUI.WixUI_FeatureTree;
-            project.OutDir = "output";
+            project.OutDir = Properties.OutputDir;
             project.InstallPrivileges = InstallPrivileges.limited;
             try
             {

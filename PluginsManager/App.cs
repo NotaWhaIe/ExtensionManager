@@ -9,7 +9,7 @@ namespace PluginsManager
 {
     internal class App : IExternalApplication
     {
-        private static AddInId addinId = new AddInId(new Guid("4AB79F62-F346-4AC4-8D98-A1345DA39693"));
+        private static AddInId addinId = new AddInId(new Guid(Const.AppProperties.Guid));
 
         public Result OnShutdown(UIControlledApplication application)
         {
@@ -18,14 +18,14 @@ namespace PluginsManager
 
         public Result OnStartup(UIControlledApplication application)
         {
-            RibbonPanel panel = application.CreateRibbonPanel("Plugins Manager");
+            RibbonPanel panel = application.CreateRibbonPanel(Const.AppProperties.PanelName);
             
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var buttonDataFamilyCatalog = new PushButtonData("Plugins\nmanager", "Plugins\nmanager", assemblyPath, "PluginsManager.PluginManager");
+            var buttonDataFamilyCatalog = new PushButtonData(Const.AppProperties.ButtonName, Const.AppProperties.ButtonName, assemblyPath, Const.AppProperties.AssemblyName);
             var buttonFamilyCatalog = panel.AddItem(buttonDataFamilyCatalog) as PushButton;
 
-            string imageName32 = "PluginsManager.Resources.robot32.png";
-            string imageName16 = "PluginsManager.Resources.robot16.png";
+            string imageName32 = Const.AppProperties.LargeImage;
+            string imageName16 = Const.AppProperties.SmallImage;
 
             buttonFamilyCatalog.LargeImage = GetImageFromResources(imageName32);
             buttonFamilyCatalog.Image = GetImageFromResources(imageName16);

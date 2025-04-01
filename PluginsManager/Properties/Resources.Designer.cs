@@ -83,6 +83,16 @@ namespace PluginsManager.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap imgPlaceholder {
+            get {
+                object obj = ResourceManager.GetObject("imgPlaceholder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap robot16 {
             get {
                 object obj = ResourceManager.GetObject("robot16", resourceCulture);

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using WixSharp;
+using static WixSharp.Win32;
 
 namespace Build
 {
@@ -36,35 +37,65 @@ namespace Build
                 Condition = new FeatureCondition("PROP1 = 1", level: 1)
             };
 
+
+
+
             var project = new Project(Properties.ProjectName,
-                new Dir(new Id("INSTALLFOLDER24"), Properties.InstallDir24, 
-                    new WixSharp.File(feature24, addin_file),    
-                    new Dir(new Id("SUBFOLDER24"), subfolder_name,
-                        new Files(feature24, source_dll_folder + "*.*")
+                new Dir(@"%AppDataFolder%",
+                    new Dir("Autodesk",
+                        new Dir("Revit",
+                            new Dir("Addins",
+                                new Dir("2024",
+                                    new WixSharp.File(feature24, addin_file),
+                                    new Dir(new Id("SUBFOLDER24"), subfolder_name,
+                                        new Files(feature24, source_dll_folder + "*.*")
+                                        )
+                                    ),
+                                new Dir("2023",
+                                    new WixSharp.File(feature23, addin_file),
+                                    new Dir(new Id("SUBFOLDER23"), subfolder_name,
+                                        new Files(feature23, source_dll_folder + "*.*")
+                                        )
+                                    ),
+                                new Dir("2022",
+                                    new WixSharp.File(feature22, addin_file),
+                                    new Dir(new Id("SUBFOLDER22"), subfolder_name,
+                                        new Files(feature22, source_dll_folder + "*.*")
+                                        )
+                                    ),
+                                new Dir("2021",
+                                    new WixSharp.File(feature21, addin_file),
+                                    new Dir(new Id("SUBFOLDER21"), subfolder_name,
+                                        new Files(feature21, source_dll_folder + "*.*")
+                                        )
+                                    )
+                                )
+                            )
+                        )
                     )
-                ),
+                );
 
-                new Dir(new Id("INSTALLFOLDER23"), Properties.InstallDir23,
-                    new WixSharp.File(feature23, addin_file),
-                    new Dir(new Id("SUBFOLDER23"), subfolder_name,
-                        new Files(feature23, source_dll_folder + "*.*")
-                    )
-                ),
+                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2023",
+                //    new WixSharp.File(feature23, addin_file),
+                //    new Dir(new Id("SUBFOLDER23"), subfolder_name,
+                //        new Files(feature23, source_dll_folder + "*.*")
+                //    )
+                //),
 
-                new Dir(new Id("INSTALLFOLDER22"), Properties.InstallDir22,
-                    new WixSharp.File(feature22, addin_file),
-                    new Dir(new Id("SUBFOLDER22"), subfolder_name,
-                        new Files(feature22, source_dll_folder + "*.*")
-                    )
-                ),
+                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2022",
+                //    new WixSharp.File(feature22, addin_file),
+                //    new Dir(new Id("SUBFOLDER22"), subfolder_name,
+                //        new Files(feature22, source_dll_folder + "*.*")
+                //    )
+                //),
 
-                new Dir(new Id("INSTALLFOLDER21"), Properties.InstallDir21,
-                    new WixSharp.File(feature21, addin_file),
-                    new Dir(new Id("SUBFOLDER21"), subfolder_name,
-                        new Files(feature21, source_dll_folder + "*.*")
-                    )
-                )
-            );
+                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2021",
+                //    new WixSharp.File(feature21, addin_file),
+                //    new Dir(new Id("SUBFOLDER21"), subfolder_name,
+                //        new Files(feature21, source_dll_folder + "*.*")
+                //    )
+                //)
+            
 
             project.GUID = new Guid(Properties.Guid);
             project.OutFileName = Properties.ProjectName;

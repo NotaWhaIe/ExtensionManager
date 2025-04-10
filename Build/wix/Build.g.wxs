@@ -11,118 +11,184 @@
     <Media Id="1" Cabinet="Plugins20Manager.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="INSTALLFOLDER24" Name="ABSOLUTEPATH">
+      <Directory Id="AppDataFolder" Name="AppDataFolder">
+        <Directory Id="Autodesk" Name="Autodesk">
+          <Directory Id="Revit" Name="Revit">
+            <Directory Id="INSTALLDIR" Name="Addins">
+              <Directory Id="_2024_" Name="2024">
 
-        <Component Id="Component.PluginsManager.addin_1885934838" Guid="8bd7d784-31d5-4536-9fe2-416a4e679220">
-          <File Id="PluginsManager.addin_1885934838" Source="..\PluginsManager\PluginsManager.addin" />
-        </Component>
+                <Component Id="Component.PluginsManager.addin_1412529645" Guid="8bd7d784-31d5-4536-9fe2-416afbee085e">
+                  <File Id="PluginsManager.addin_1412529645" Source="..\PluginsManager\PluginsManager.addin" />
+                  <RemoveFolder Id="_2024_" On="uninstall" />
 
-        <Directory Id="SUBFOLDER24" Name="PluginsManager">
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
 
-          <Component Id="Component.PluginsManager.dll_2753807818" Guid="8bd7d784-31d5-4536-9fe2-416a881670be">
-            <File Id="PluginsManager.dll_2753807818" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
-          </Component>
+                <Directory Id="SUBFOLDER24" Name="PluginsManager">
 
-        </Directory>
-      </Directory>
+                  <Component Id="Component.PluginsManager.dll_979162095" Guid="8bd7d784-31d5-4536-9fe2-416a975165aa">
+                    <File Id="PluginsManager.dll_979162095" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                    <RemoveFolder Id="SUBFOLDER24" On="uninstall" />
 
-      <Directory Id="INSTALLFOLDER23" Name="ABSOLUTEPATH1">
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
 
-        <Component Id="Component.PluginsManager.addin_2780167376" Guid="8bd7d784-31d5-4536-9fe2-416a84737104">
-          <File Id="PluginsManager.addin_2780167376" Source="..\PluginsManager\PluginsManager.addin" />
-        </Component>
+                </Directory>
+              </Directory>
 
-        <Directory Id="SUBFOLDER23" Name="PluginsManager">
+              <Directory Id="_2023_" Name="2023">
 
-          <Component Id="Component.PluginsManager.dll_321176718" Guid="8bd7d784-31d5-4536-9fe2-416a0536448f">
-            <File Id="PluginsManager.dll_321176718" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
-          </Component>
+                <Component Id="Component.PluginsManager.addin_1004759148" Guid="8bd7d784-31d5-4536-9fe2-416a4af2664b">
+                  <File Id="PluginsManager.addin_1004759148" Source="..\PluginsManager\PluginsManager.addin" />
+                  <RemoveFolder Id="_2023_" On="uninstall" />
 
-        </Directory>
-      </Directory>
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
 
-      <Directory Id="INSTALLFOLDER22" Name="ABSOLUTEPATH2">
+                <Directory Id="SUBFOLDER23" Name="PluginsManager">
 
-        <Component Id="Component.PluginsManager.addin_3173389469" Guid="8bd7d784-31d5-4536-9fe2-416a1642dd9e">
-          <File Id="PluginsManager.addin_3173389469" Source="..\PluginsManager\PluginsManager.addin" />
-        </Component>
+                  <Component Id="Component.PluginsManager.dll_3364778367" Guid="8bd7d784-31d5-4536-9fe2-416a2e0cd254">
+                    <File Id="PluginsManager.dll_3364778367" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                    <RemoveFolder Id="SUBFOLDER23" On="uninstall" />
 
-        <Directory Id="SUBFOLDER22" Name="PluginsManager">
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
 
-          <Component Id="Component.PluginsManager.dll_3770124146" Guid="8bd7d784-31d5-4536-9fe2-416a2d399664">
-            <File Id="PluginsManager.dll_3770124146" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
-          </Component>
+                </Directory>
+              </Directory>
 
-        </Directory>
-      </Directory>
+              <Directory Id="_2022_" Name="2022">
 
-      <Directory Id="INSTALLFOLDER21" Name="ABSOLUTEPATH3">
+                <Component Id="Component.PluginsManager.addin_70931861" Guid="8bd7d784-31d5-4536-9fe2-416aeff6d0bb">
+                  <File Id="PluginsManager.addin_70931861" Source="..\PluginsManager\PluginsManager.addin" />
+                  <RemoveFolder Id="_2022_" On="uninstall" />
 
-        <Component Id="Component.PluginsManager.addin_2451865234" Guid="8bd7d784-31d5-4536-9fe2-416afa7ee92c">
-          <File Id="PluginsManager.addin_2451865234" Source="..\PluginsManager\PluginsManager.addin" />
-        </Component>
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
 
-        <Directory Id="SUBFOLDER21" Name="PluginsManager">
+                <Directory Id="SUBFOLDER22" Name="PluginsManager">
 
-          <Component Id="Component.PluginsManager.dll_3748361294" Guid="8bd7d784-31d5-4536-9fe2-416a81852757">
-            <File Id="PluginsManager.dll_3748361294" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                  <Component Id="Component.PluginsManager.dll_1993048656" Guid="8bd7d784-31d5-4536-9fe2-416a47311060">
+                    <File Id="PluginsManager.dll_1993048656" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                    <RemoveFolder Id="SUBFOLDER22" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Directory Id="_2021_" Name="2021">
+
+                <Component Id="Component.PluginsManager.addin_1511678929" Guid="8bd7d784-31d5-4536-9fe2-416acb883c50">
+                  <File Id="PluginsManager.addin_1511678929" Source="..\PluginsManager\PluginsManager.addin" />
+                  <RemoveFolder Id="_2021_" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Directory Id="SUBFOLDER21" Name="PluginsManager">
+
+                  <Component Id="Component.PluginsManager.dll_2704920217" Guid="8bd7d784-31d5-4536-9fe2-416ac2e70b80">
+                    <File Id="PluginsManager.dll_2704920217" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                    <RemoveFolder Id="SUBFOLDER21" On="uninstall" />
+
+                    <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                      <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                    </RegistryKey>
+                  </Component>
+
+                </Directory>
+              </Directory>
+
+              <Component Id="INSTALLDIR" Guid="8bd7d784-31d5-4536-9fe2-416ad8e6bd90">
+                <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+            </Directory>
+
+            <Component Id="Revit" Guid="8bd7d784-31d5-4536-9fe2-416aff00032c">
+              <RemoveFolder Id="Revit" On="uninstall" />
+
+              <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                <RegistryValue Value="0" Type="string" KeyPath="yes" />
+              </RegistryKey>
+            </Component>
+
+          </Directory>
+
+          <Component Id="Autodesk" Guid="8bd7d784-31d5-4536-9fe2-416a9436fc32">
+            <RemoveFolder Id="Autodesk" On="uninstall" />
+
+            <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+              <RegistryValue Value="0" Type="string" KeyPath="yes" />
+            </RegistryKey>
           </Component>
 
         </Directory>
       </Directory>
     </Directory>
 
-    <CustomAction Id="Set_DirAbsolutePath" Property="INSTALLFOLDER24" Value="C:\Users\ilyas\AppData\Roaming\Autodesk\Revit\Addins\2024" />
-    <CustomAction Id="Set_DirAbsolutePath1" Property="INSTALLFOLDER23" Value="C:\Users\ilyas\AppData\Roaming\Autodesk\Revit\Addins\2023" />
-    <CustomAction Id="Set_DirAbsolutePath2" Property="INSTALLFOLDER22" Value="C:\Users\ilyas\AppData\Roaming\Autodesk\Revit\Addins\2022" />
-    <CustomAction Id="Set_DirAbsolutePath3" Property="INSTALLFOLDER21" Value="C:\Users\ilyas\AppData\Roaming\Autodesk\Revit\Addins\2021" />
-
     <UIRef Id="WixUI_FeatureTree" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
-    <Property Id="INSTALLDIR_ABSOLUTEPATH" Value="C:\Users\ilyas\AppData\Roaming\Autodesk\Revit\Addins\2024" />
-
-    <Feature Id="_2024_" Title="2024" Absent="allow" Level="1">
+    <Feature Id="_2024__" Title="2024" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_1885934838" />
-      <ComponentRef Id="Component.PluginsManager.dll_2753807818" />
+      <ComponentRef Id="Component.PluginsManager.addin_1412529645" />
+      <ComponentRef Id="Component.PluginsManager.dll_979162095" />
+      <ComponentRef Id="Autodesk" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="INSTALLDIR" />
     </Feature>
 
-    <Feature Id="_2023_" Title="2023" Absent="allow" Level="1">
+    <Feature Id="_2023__" Title="2023" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_2780167376" />
-      <ComponentRef Id="Component.PluginsManager.dll_321176718" />
+      <ComponentRef Id="Component.PluginsManager.addin_1004759148" />
+      <ComponentRef Id="Component.PluginsManager.dll_3364778367" />
+      <ComponentRef Id="Autodesk" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="INSTALLDIR" />
     </Feature>
 
-    <Feature Id="_2022_" Title="2022" Absent="allow" Level="1">
+    <Feature Id="_2022__" Title="2022" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_3173389469" />
-      <ComponentRef Id="Component.PluginsManager.dll_3770124146" />
+      <ComponentRef Id="Component.PluginsManager.addin_70931861" />
+      <ComponentRef Id="Component.PluginsManager.dll_1993048656" />
+      <ComponentRef Id="Autodesk" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="INSTALLDIR" />
     </Feature>
 
-    <Feature Id="_2021_" Title="2021" Absent="allow" Level="1">
+    <Feature Id="_2021__" Title="2021" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_2451865234" />
-      <ComponentRef Id="Component.PluginsManager.dll_3748361294" />
+      <ComponentRef Id="Component.PluginsManager.addin_1511678929" />
+      <ComponentRef Id="Component.PluginsManager.dll_2704920217" />
+      <ComponentRef Id="Autodesk" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="INSTALLDIR" />
     </Feature>
-
-    <InstallExecuteSequence>
-      <Custom Action="Set_DirAbsolutePath" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (INSTALLFOLDER24 = ABSOLUTEPATH)</Custom>
-      <Custom Action="Set_DirAbsolutePath1" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (INSTALLFOLDER23 = ABSOLUTEPATH1)</Custom>
-      <Custom Action="Set_DirAbsolutePath2" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (INSTALLFOLDER22 = ABSOLUTEPATH2)</Custom>
-      <Custom Action="Set_DirAbsolutePath3" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (INSTALLFOLDER21 = ABSOLUTEPATH3)</Custom>
-    </InstallExecuteSequence>
-
-    <InstallUISequence>
-      <Custom Action="Set_DirAbsolutePath" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (INSTALLFOLDER24 = ABSOLUTEPATH)</Custom>
-      <Custom Action="Set_DirAbsolutePath1" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (INSTALLFOLDER23 = ABSOLUTEPATH1)</Custom>
-      <Custom Action="Set_DirAbsolutePath2" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (INSTALLFOLDER22 = ABSOLUTEPATH2)</Custom>
-      <Custom Action="Set_DirAbsolutePath3" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (INSTALLFOLDER21 = ABSOLUTEPATH3)</Custom>
-    </InstallUISequence>
 
   </Product>
 </Wix>

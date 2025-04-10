@@ -37,9 +37,6 @@ namespace Build
                 Condition = new FeatureCondition("PROP1 = 1", level: 1)
             };
 
-
-
-
             var project = new Project(Properties.ProjectName,
                 new Dir(@"%AppDataFolder%",
                     new Dir("Autodesk",
@@ -67,35 +64,13 @@ namespace Build
                                     new WixSharp.File(feature21, addin_file),
                                     new Dir(new Id("SUBFOLDER21"), subfolder_name,
                                         new Files(feature21, source_dll_folder + "*.*")
-                                        )
                                     )
                                 )
                             )
                         )
                     )
-                );
-
-                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2023",
-                //    new WixSharp.File(feature23, addin_file),
-                //    new Dir(new Id("SUBFOLDER23"), subfolder_name,
-                //        new Files(feature23, source_dll_folder + "*.*")
-                //    )
-                //),
-
-                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2022",
-                //    new WixSharp.File(feature22, addin_file),
-                //    new Dir(new Id("SUBFOLDER22"), subfolder_name,
-                //        new Files(feature22, source_dll_folder + "*.*")
-                //    )
-                //),
-
-                //new Dir(@"%AppDataFolder%\Autodesk\RevitAddins\2021",
-                //    new WixSharp.File(feature21, addin_file),
-                //    new Dir(new Id("SUBFOLDER21"), subfolder_name,
-                //        new Files(feature21, source_dll_folder + "*.*")
-                //    )
-                //)
-            
+                )
+            );
 
             project.GUID = new Guid(Properties.Guid);
             project.OutFileName = Properties.ProjectName;

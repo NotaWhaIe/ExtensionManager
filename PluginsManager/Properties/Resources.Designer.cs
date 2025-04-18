@@ -73,6 +73,26 @@ namespace PluginsManager.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap folderwheel161 {
+            get {
+                object obj = ResourceManager.GetObject("folderwheel161", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap folderwheel321 {
+            get {
+                object obj = ResourceManager.GetObject("folderwheel321", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap github32 {
             get {
                 object obj = ResourceManager.GetObject("github32", resourceCulture);

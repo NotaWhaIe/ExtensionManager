@@ -21,14 +21,16 @@ namespace PluginsManager
             RibbonPanel panel = application.CreateRibbonPanel(Const.AppProperties.PanelName);
             
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var buttonDataFamilyCatalog = new PushButtonData(Const.AppProperties.ButtonName, Const.AppProperties.ButtonName, assemblyPath, Const.AppProperties.AssemblyName);
-            var buttonFamilyCatalog = panel.AddItem(buttonDataFamilyCatalog) as PushButton;
 
-            string imageName32 = Const.AppProperties.LargeImage;
-            string imageName16 = Const.AppProperties.SmallImage;
+            var btnDataPluginManager = new PushButtonData(Const.AppProperties.ButtonNamePluginsManager, Const.AppProperties.ButtonNamePluginsManager, assemblyPath, Const.AppProperties.AssemblyNamePluginsManager);
+            var btnFamilyCatalog = panel.AddItem(btnDataPluginManager) as PushButton;
+            btnFamilyCatalog.LargeImage = GetImageFromResources(Const.AppProperties.LargeImagePluginsManager);
+            btnFamilyCatalog.Image = GetImageFromResources(Const.AppProperties.SmallImagePluginsManager);
 
-            buttonFamilyCatalog.LargeImage = GetImageFromResources(imageName32);
-            buttonFamilyCatalog.Image = GetImageFromResources(imageName16);
+            var btnDataAllCommandsInFolder = new PushButtonData(Const.AppProperties.ButtonNameCommandinFolder, Const.AppProperties.ButtonNameCommandinFolder, assemblyPath, Const.AppProperties.AssemblyNameCommandinFolder);
+            var btnAllCommandsInFolder = panel.AddItem(btnDataAllCommandsInFolder) as PushButton;
+            btnAllCommandsInFolder.LargeImage = GetImageFromResources(Const.AppProperties.LargeImageCommandinFolder);
+            btnAllCommandsInFolder.Image = GetImageFromResources(Const.AppProperties.SmallImageCommandinFolder);
 
             return Result.Succeeded;
         }

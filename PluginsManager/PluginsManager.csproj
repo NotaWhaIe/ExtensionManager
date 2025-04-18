@@ -74,8 +74,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllCommandsInFolder.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="CommandConfigManager.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="Debugger\Debugger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debugger\Debugger.Designer.cs">
+      <DependentUpon>Debugger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Debugger\IsDebugWindow.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="PluginManagerForm.cs">
@@ -92,11 +101,14 @@
     <Compile Include="WindowManager.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandManager.cs" />
-    <Compile Include="FileManager.cs" />
+    <Compile Include="UserConfigManager.cs" />
     <Compile Include="GlobComandName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Debugger\Debugger.resx">
+      <DependentUpon>Debugger.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PluginManagerForm.resx">
       <DependentUpon>PluginManagerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,7 +122,7 @@
     <None Include="PluginsManager.addin" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\folder32.png" />
+    <EmbeddedResource Include="Resources\folder32.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\robot16.png" />
@@ -118,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\imgPlaceholder.png" />
-    <Content Include="Resources\github32.png" />
+    <EmbeddedResource Include="Resources\folderWheel32.png" />
+    <EmbeddedResource Include="Resources\folderWheel16.png" />
+    <EmbeddedResource Include="Resources\github32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

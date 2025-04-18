@@ -7,15 +7,17 @@ namespace PluginsManager
 {
     public class WindowManager
     {
-        public ExternalEvent External_event {  get; set; }  
-        public PluginsManagerForm Window {  get; set; }
+        public ExternalEvent External_event { get; set; }
+        public PluginsManagerForm Window { get; set; }
         public CommandManager Command_manager { get; set; }
-        public FileManager File_manager { get; set; }
+        public UserConfigManager File_manager { get; set; }
         public UIApplication UiApp { get; set; }
-        public WindowManager(CommandManager command_manager, FileManager file_manager, UIApplication uiApp)
+        public CommandConfigManager CommandConfigManager { get; set; }
+        public WindowManager(CommandManager command_manager, UserConfigManager file_manager, CommandConfigManager commandConfigManager, UIApplication uiApp)
         {
             Command_manager = command_manager;
             File_manager = file_manager;
+            CommandConfigManager = commandConfigManager;
             UiApp = uiApp;
             External_event = Command_manager.ExternalEvent;
             PluginsManagerForm window = new PluginsManagerForm();
@@ -23,8 +25,8 @@ namespace PluginsManager
             window.Text = $"Менеджер плагинов";
             window.groupBox1.Text = $"Информация";
             window.tabControl.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Regular);
-            window.toolStripButton1.Click += (s, e) => Change_Folder();
-            window.toolStripButton1.Text  = "Выбрать папку";
+            window.toolStripButton1.Click += (s, e) => ChangeFolder();
+            window.toolStripButton1.Text = "Выбрать папку";
             window.toolStripButton2.Click += (s, e) => OpenGitHub();
             window.toolStripButton2.Text = "GitHub";
             window.richTextBox1.LinkClicked += RichTextBox1_LinkClicked;
@@ -32,11 +34,12 @@ namespace PluginsManager
             window.ShowDialog();
         }
 
-        private void Change_Folder()
+        private void ChangeFolder()
         {
-            var dialog_result = File_manager.SetPathToConfigFile();
-            if (dialog_result)
+            var dialogResult = File_manager.SetPathToConfigFile();
+            if (dialogResult)
             {
+                CommandConfigManager.GetSettings(File_manager.FolderPath);
                 Command_manager.Refresh(File_manager.FolderPath);
                 Window.tabControl.TabPages.Clear();
                 CreateTabs();
@@ -63,7 +66,7 @@ namespace PluginsManager
         {
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.LinkText)
             {
-                UseShellExecute = true // Используем стандартный браузер
+                UseShellExecute = true
             });
         }
 
@@ -75,20 +78,23 @@ namespace PluginsManager
 
         public void CreateTabs()
         {
-            foreach (var tab in Command_manager.CommandsDictionary)
+            if (Command_manager.CommandsDictionary != null)
             {
-                if (string.Equals(File_manager.Post, "manager", System.StringComparison.InvariantCultureIgnoreCase))
+                foreach (var tab in Command_manager.CommandsDictionary)
                 {
-                    if (!File_manager.ExceptionTabs.Contains(tab.Key))
+                    if (string.Equals(File_manager.Post, "manager", System.StringComparison.InvariantCultureIgnoreCase))
                     {
-                        CreateNewTab(tab.Key);
+                        if (!File_manager.ExceptionTabs.Contains(tab.Key))
+                        {
+                            CreateNewTab(tab.Key);
+                        }
                     }
-                }
-                else
-                {
-                    if (!File_manager.ExceptionTabs.Contains(tab.Key) & !tab.Key.Contains('#'))
+                    else
                     {
-                        CreateNewTab(tab.Key);
+                        if (!File_manager.ExceptionTabs.Contains(tab.Key) & !tab.Key.Contains('#'))
+                        {
+                            CreateNewTab(tab.Key);
+                        }
                     }
                 }
             }
@@ -107,7 +113,6 @@ namespace PluginsManager
 
         public DataGridView CreateDataGrid(string tabName)
         {
-            // Устанавливаем свойства
             DataGridView dataGridView = new DataGridView
             {
                 AllowUserToResizeColumns = false,
@@ -117,7 +122,7 @@ namespace PluginsManager
                 AllowUserToAddRows = false,
                 AllowUserToDeleteRows = false
             };
-            // Настройка заголовков столбцов
+
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle
             {
                 Alignment = DataGridViewContentAlignment.MiddleLeft,
@@ -153,7 +158,6 @@ namespace PluginsManager
 
             dataGridView.RowsDefaultCellStyle = rowStyle;
 
-            // Дополнительные свойства
             dataGridView.ReadOnly = true;
             dataGridView.MultiSelect = false;
             dataGridView.RowHeadersDefaultCellStyle = columnHeaderStyle;
@@ -214,10 +218,10 @@ namespace PluginsManager
             int rowIndex = dataGridView.Rows.Add();
             DataGridViewRow row = dataGridView.Rows[rowIndex];
 
-            row.Cells["Выбор"].Value = buttonText; 
-            row.Cells[" "].Value = image;  
-            row.Cells["id"].Value = code;    
-            row.Cells["Имя"].Value = name;    
+            row.Cells["Выбор"].Value = buttonText;
+            row.Cells[" "].Value = image;
+            row.Cells["id"].Value = code;
+            row.Cells["Имя"].Value = name;
         }
     }
 }

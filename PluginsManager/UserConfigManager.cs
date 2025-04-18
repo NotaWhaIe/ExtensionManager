@@ -5,13 +5,13 @@ using System.Xml.Linq;
 
 namespace PluginsManager
 {
-   public class FileManager
+   public class UserConfigManager
     {   
         public string FolderPath { get; set; }
         public string ExceptionTabs = string.Empty;
         public string Post = Const.ConfigFile.DefaultPost;
 
-        public FileManager()
+        public UserConfigManager()
         {
             GetSettingsFromExistConfigFile();
         }

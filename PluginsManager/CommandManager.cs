@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static PluginsManager.Const;
 
 namespace PluginsManager
 {
@@ -129,10 +130,10 @@ namespace PluginsManager
 
             if (CommandConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
             {
-                commandName = CommandConfigManager.CommamdConfigDictionary[type.FullName]["CmdName"];
-                tabName = CommandConfigManager.CommamdConfigDictionary[type.FullName]["CmdTab"];
-                commandDescription = CommandConfigManager.CommamdConfigDictionary[type.FullName]["CmdDescription"];
-                commandImage = CommandConfigManager.CommamdConfigDictionary[type.FullName]["CmdImage"];
+                commandName = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlName[0]];
+                tabName = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlTab[0]];
+                commandDescription = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlDescription[0]];
+                commandImage = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlImage[0]];
             }
             else
             {
@@ -154,7 +155,7 @@ namespace PluginsManager
                 Image image = Properties.Resources.imgPlaceholder;
                 if (CommandConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
                 {
-                    var path = Path.Combine(FolderPath, "img", commandImage);
+                    var path = Path.Combine(FolderPath, CmdConfigFile.ImageFolderName, commandImage);
 
                     if (File.Exists(path))
                     {

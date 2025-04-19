@@ -9,7 +9,7 @@ namespace PluginsManager
     {   
         public string FolderPath { get; set; }
         public string ExceptionTabs = string.Empty;
-        public string Post = Const.ConfigFile.DefaultPost;
+        public string Post = Const.UserConfigFile.DefaultPost;
 
         public UserConfigManager()
         {
@@ -19,12 +19,12 @@ namespace PluginsManager
         private string GetConfigFilePath()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pluginConfigPath = Path.Combine(appDataPath, Const.ConfigFile.FolderName);
+            string pluginConfigPath = Path.Combine(appDataPath, Const.UserConfigFile.FolderName);
             if (!Directory.Exists(pluginConfigPath))
             {
                 Directory.CreateDirectory(pluginConfigPath);
             }
-            return Path.Combine(pluginConfigPath, Const.ConfigFile.Name);
+            return Path.Combine(pluginConfigPath, Const.UserConfigFile.Name);
         }
         private void GetSettingsFromExistConfigFile()
         {
@@ -36,9 +36,9 @@ namespace PluginsManager
             else
             {
                 XDocument xmlDoc = XDocument.Load(configFilePath);
-                string folderPath = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlFolderPath)?.Value ?? string.Empty;
-                string exceptionTabs = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
-                string post = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlPost)?.Value ?? string.Empty;
+                string folderPath = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlFolderPath)?.Value ?? string.Empty;
+                string exceptionTabs = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
+                string post = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlPost)?.Value ?? string.Empty;
                 FolderPath = folderPath;
                 ExceptionTabs = exceptionTabs;
                 Post = post;
@@ -53,8 +53,8 @@ namespace PluginsManager
                 if (File.Exists(configFilePath))
                 {
                     XDocument xmlDoc = XDocument.Load(configFilePath);
-                    string tabConfig = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
-                    string post = xmlDoc.Element(Const.ConfigFile.XmlSettings)?.Element(Const.ConfigFile.XmlPost)?.Value ?? string.Empty;
+                    string tabConfig = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
+                    string post = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlPost)?.Value ?? string.Empty;
                     ExceptionTabs = tabConfig;
                     Post = post;
                 }
@@ -69,10 +69,10 @@ namespace PluginsManager
                 {
                     string folderPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
                     FolderPath = folderPath;
-                    XElement settings = new XElement(Const.ConfigFile.XmlSettings,
-                        new XElement(Const.ConfigFile.XmlFolderPath, FolderPath),
-                        new XElement(Const.ConfigFile.XmlExceptionTabs, ExceptionTabs),
-                        new XElement(Const.ConfigFile.XmlPost, Post)
+                    XElement settings = new XElement(Const.UserConfigFile.XmlSettings,
+                        new XElement(Const.UserConfigFile.XmlFolderPath, FolderPath),
+                        new XElement(Const.UserConfigFile.XmlExceptionTabs, ExceptionTabs),
+                        new XElement(Const.UserConfigFile.XmlPost, Post)
                     );
                     settings.Save(configFilePath);
                     return true;

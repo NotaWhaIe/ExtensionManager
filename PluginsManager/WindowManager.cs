@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static PluginsManager.Const;
 
 namespace PluginsManager
 {
@@ -82,7 +83,7 @@ namespace PluginsManager
             {
                 foreach (var tab in Command_manager.CommandsDictionary)
                 {
-                    if (string.Equals(File_manager.Post, "manager", System.StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(File_manager.Post, UserConfigFile.ManagerPost, System.StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (!File_manager.ExceptionTabs.Contains(tab.Key))
                         {

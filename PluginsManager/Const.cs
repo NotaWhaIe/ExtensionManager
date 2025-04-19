@@ -13,7 +13,7 @@
             public static string Description = "IS_DESCRIPTION";
             public static string Image = "IS_IMAGE";
         }
-        public static class ConfigFile
+        public static class UserConfigFile
         {
             public static string FolderName = "PluginsManager";
             public static string Name = "config.xml";
@@ -22,6 +22,7 @@
             public static string XmlExceptionTabs = "ExceptionTabs";
             public static string XmlPost = "Post";
             public static string DefaultPost = "user";
+            public static string ManagerPost = "manager";
         }
         public static class AppProperties
         {
@@ -37,6 +38,18 @@
             public static string AssemblyNameCommandinFolder = "PluginsManager.AllCommandsInFolder";
             public static string LargeImageCommandinFolder = "PluginsManager.Resources.folderWheel32.png";
             public static string SmallImageCommandinFolder = "PluginsManager.Resources.folderWheel16.png";
+        }
+        public static class CmdConfigFile
+        {
+            public static string ImageFolderName = "img";
+            public static string Name = "config.xml";
+            public static string XmlRoot = "Commands";
+            public static string XmlCommand = "Command";
+            public static string[] XmlCode = { "CmdCode",  "Имя проекта.Имя класса"};
+            public static string[] XmlTab = { "CmdTab", "Название вкладки" };
+            public static string[] XmlName = { "CmdName", "Имя для отображения" };
+            public static string[] XmlDescription = { "CmdDescription", "Описание команды" };
+            public static string[] XmlImage = { "CmdImage", "image.png" };
 
         }
     }

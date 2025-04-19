@@ -7,7 +7,5 @@
 		<VendorId>i_savelev</VendorId>
 		<VendorDescription>https://github.com/i-savelev/PluginsManager</VendorDescription>
 		<Text>Plugins Manager</Text>
-		<VendorId>MyId</VendorId>
-		<VendorDescription></VendorDescription>
 	</AddIn>
 </RevitAddIns>

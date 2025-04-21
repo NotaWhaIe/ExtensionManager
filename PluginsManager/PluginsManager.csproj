@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="AllCommandsInFolder.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="CommandConfigManager.cs" />
+    <Compile Include="ConfigManager.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Debugger\Debugger.cs">
       <SubType>Form</SubType>
@@ -98,10 +98,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TempFiles.cs" />
     <Compile Include="WindowManager.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandManager.cs" />
-    <Compile Include="UserConfigManager.cs" />
     <Compile Include="GlobComandName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -133,6 +133,9 @@
     <EmbeddedResource Include="Resources\folderWheel32.png" />
     <EmbeddedResource Include="Resources\folderWheel16.png" />
     <EmbeddedResource Include="Resources\github32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\refresh32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

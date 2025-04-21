@@ -11,17 +11,19 @@ namespace PluginsManager
         public ExternalEvent External_event { get; set; }
         public PluginsManagerForm Window { get; set; }
         public CommandManager Command_manager { get; set; }
-        public UserConfigManager File_manager { get; set; }
+        public ConfigManager File_manager { get; set; }
         public UIApplication UiApp { get; set; }
-        public CommandConfigManager CommandConfigManager { get; set; }
-        public WindowManager(CommandManager command_manager, UserConfigManager file_manager, CommandConfigManager commandConfigManager, UIApplication uiApp)
+        public ConfigManager ConfigManager { get; set; }
+        public TempFiles Temp { get; set; }
+        public WindowManager(CommandManager command_manager, ConfigManager file_manager, ConfigManager configManager, TempFiles tempFiles, UIApplication uiApp)
         {
             Command_manager = command_manager;
             File_manager = file_manager;
-            CommandConfigManager = commandConfigManager;
+            ConfigManager = configManager;
             UiApp = uiApp;
             External_event = Command_manager.ExternalEvent;
             PluginsManagerForm window = new PluginsManagerForm();
+            Temp = tempFiles;
             Window = window;
             window.Text = $"Менеджер плагинов";
             window.groupBox1.Text = $"Информация";
@@ -30,6 +32,8 @@ namespace PluginsManager
             window.toolStripButton1.Text = "Выбрать папку";
             window.toolStripButton2.Click += (s, e) => OpenGitHub();
             window.toolStripButton2.Text = "GitHub";
+            window.toolStripButton3.Click += (s, e) => { Refrash(); };
+            window.toolStripButton3.Text = "Обновить";
             window.richTextBox1.LinkClicked += RichTextBox1_LinkClicked;
             CreateTabs();
             window.ShowDialog();
@@ -37,14 +41,24 @@ namespace PluginsManager
 
         private void ChangeFolder()
         {
-            var dialogResult = File_manager.SetPathToConfigFile();
+            var dialogResult = File_manager.SetPathToUserConfigFileDialog();
             if (dialogResult)
             {
-                CommandConfigManager.GetSettings(File_manager.FolderPath);
-                Command_manager.Refresh(File_manager.FolderPath);
+                Temp.CreateTemp(File_manager.FolderDllPath);
+                ConfigManager.GetDllSettings(Temp.TempDirectory);
+                Command_manager.Refresh(Temp.TempDirectory);
                 Window.tabControl.TabPages.Clear();
                 CreateTabs();
             }
+        }
+
+        private void Refrash()
+        {
+            Temp.CreateTemp(File_manager.FolderDllPath);
+            ConfigManager.GetDllSettings(Temp.TempDirectory);
+            Command_manager.Refresh(Temp.TempDirectory);
+            Window.tabControl.TabPages.Clear();
+            CreateTabs();
         }
 
         void table_CellClickRunCommand(object sender, DataGridViewCellEventArgs e, DataGridView dataGridView)

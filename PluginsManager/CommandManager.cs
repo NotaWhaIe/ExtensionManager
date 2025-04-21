@@ -19,13 +19,13 @@ namespace PluginsManager
         public Dictionary<string, List<Command>> CommandsDictionary = new Dictionary<string, List<Command>>();
         public string FolderPath { get; set; }
         public ExternalEvent ExternalEvent { get; set; }
-        public CommandConfigManager CommandConfigManager { get; set; }
+        public ConfigManager ConfigManager { get; set; }
 
-        public CommandManager(UIApplication uiApp, string folderPath, CommandConfigManager commandConfigManager)
+        public CommandManager(UIApplication uiApp, string folderPath, ConfigManager commandConfigManager)
         {
             UiApp = uiApp;
             FolderPath = folderPath;
-            CommandConfigManager = commandConfigManager;
+            ConfigManager = commandConfigManager;
             GetExternalCommandsFromAssembly(FolderPath);
             Handler eventHandler = new Handler(this);
             ExternalEvent externalEvent = ExternalEvent.Create(eventHandler);
@@ -128,12 +128,12 @@ namespace PluginsManager
             var commandDescription = string.Empty;
             var commandImage = string.Empty;
 
-            if (CommandConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
+            if (ConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
             {
-                commandName = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlName[0]];
-                tabName = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlTab[0]];
-                commandDescription = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlDescription[0]];
-                commandImage = CommandConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlImage[0]];
+                commandName = ConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlName[0]];
+                tabName = ConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlTab[0]];
+                commandDescription = ConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlDescription[0]];
+                commandImage = ConfigManager.CommamdConfigDictionary[type.FullName][CmdConfigFile.XmlImage[0]];
             }
             else
             {
@@ -153,7 +153,7 @@ namespace PluginsManager
             if (!string.IsNullOrEmpty(tabName))
             {
                 Image image = Properties.Resources.imgPlaceholder;
-                if (CommandConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
+                if (ConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
                 {
                     var path = Path.Combine(FolderPath, CmdConfigFile.ImageFolderName, commandImage);
 

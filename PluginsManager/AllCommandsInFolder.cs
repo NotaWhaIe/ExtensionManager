@@ -10,10 +10,9 @@ namespace PluginsManager
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIApplication uiApp = commandData.Application;
-
-            UserConfigManager fileManager = new UserConfigManager();
-            CommandConfigManager commandConfigManager = new CommandConfigManager(fileManager);
-            CommandManager commandManager = new CommandManager(uiApp, fileManager.FolderPath, commandConfigManager);
+            TempFiles tempFiles = new TempFiles();
+            ConfigManager configManager = new ConfigManager(tempFiles);
+            CommandManager commandManager = new CommandManager(uiApp, configManager.FolderDllPath, configManager);
             foreach (var type in commandManager.AllTypes)
             {
                 IsDebugWindow.DtSheets.Rows.Add(type.FullName);

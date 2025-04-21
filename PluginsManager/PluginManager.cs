@@ -10,10 +10,10 @@ namespace PluginsManager
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIApplication uiApp = commandData.Application;
-            UserConfigManager fileManager = new UserConfigManager();
-            CommandConfigManager commandConfigManager = new CommandConfigManager(fileManager);
-            CommandManager commandManager = new CommandManager(uiApp, fileManager.FolderPath, commandConfigManager);
-            WindowManager windowManager = new WindowManager(commandManager, fileManager, commandConfigManager, uiApp);
+            TempFiles tempFiles = new TempFiles();
+            ConfigManager configManager = new ConfigManager(tempFiles);
+            CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
+            WindowManager windowManager = new WindowManager(commandManager, configManager, configManager, tempFiles, uiApp);
 
             return Result.Succeeded;
         }

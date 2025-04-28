@@ -12,7 +12,7 @@ namespace PluginsManager
             UIApplication uiApp = commandData.Application;
             TempFiles tempFiles = new TempFiles();
             ConfigManager configManager = new ConfigManager(tempFiles);
-            CommandManager commandManager = new CommandManager(uiApp, configManager.FolderDllPath, configManager);
+            CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
             foreach (var type in commandManager.AllTypes)
             {
                 IsDebugWindow.DtSheets.Rows.Add(type.FullName);

@@ -15,7 +15,7 @@ namespace PluginsManager
             CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
             foreach (var type in commandManager.AllTypes)
             {
-                IsDebugWindow.DtSheets.Rows.Add(type.FullName);
+                IsDebugWindow.AddRow(type.FullName);
             }
             IsDebugWindow.Show();
 

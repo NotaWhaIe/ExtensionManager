@@ -20,7 +20,9 @@ namespace PluginsManager
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("Ошибка", $"Команда завершилась с ошибкой:\n\"{ex.Message}\"");
+                TaskDialog td = new TaskDialog("Ошибка");
+                td.MainContent = $"{ex.Message}\n\n[Подробности]\n{ex.GetBaseException()}";
+                td.Show();
             }
             finally
             {

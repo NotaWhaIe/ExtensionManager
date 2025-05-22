@@ -53,6 +53,10 @@ namespace PluginsManager
             string message = string.Empty;
             ElementSet elements = null;
             Result result = commandInstance.Execute(commandData, ref message, elements);
+            if (result != Result.Succeeded)
+            {
+                TaskDialog.Show("Ошибка", message);
+            }
         }
 
         public ExternalCommandData Create(UIApplication uiApplication)

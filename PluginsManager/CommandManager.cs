@@ -157,6 +157,7 @@ namespace PluginsManager
             if (!string.IsNullOrEmpty(tabName))
             {
                 Image image = Properties.Resources.imgPlaceholder;
+
                 if (ConfigManager.CommamdConfigDictionary.ContainsKey(type.FullName))
                 {
                     var path = Path.Combine(FolderPath, CmdConfigFile.ImageFolderName, commandImage);
@@ -187,15 +188,33 @@ namespace PluginsManager
                         }
                     }
                 }
-                var command = new Command(tabName, type.FullName, commandName, commandDescription, image);
+                var command = new Command(type.FullName, commandName, commandDescription, image);
                 AllCommands.Add(command);
-                if (!CommandsDictionary.ContainsKey(tabName))
+
+                if (tabName.Contains("|"))
                 {
-                    CommandsDictionary.Add(tabName, new List<Command> { command });
+                    foreach (var tab in tabName.Split('|'))
+                    {
+                        if (!CommandsDictionary.ContainsKey(tab))
+                        {
+                            CommandsDictionary.Add(tab, new List<Command> { command });
+                        }
+                        else
+                        {
+                            CommandsDictionary[tab].Add(command);
+                        }
+                    }
                 }
                 else
                 {
-                    CommandsDictionary[tabName].Add(command);
+                    if (!CommandsDictionary.ContainsKey(tabName))
+                    {
+                        CommandsDictionary.Add(tabName, new List<Command> { command });
+                    }
+                    else
+                    {
+                        CommandsDictionary[tabName].Add(command);
+                    }
                 }
             }
         }

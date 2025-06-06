@@ -7,8 +7,8 @@
     <ProjectGuid>{F443DE8D-C791-4DC7-94CB-288E705ED749}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PluginsManager</RootNamespace>
-    <AssemblyName>PluginsManager</AssemblyName>
+    <RootNamespace>ExtensionManager</RootNamespace>
+    <AssemblyName>ExtensionManager</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AllCommandsInFolder.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="AssemblyLoader.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Debugger\Debugger.cs">
@@ -86,12 +87,12 @@
     </Compile>
     <Compile Include="Debugger\IsDebugWindow.cs" />
     <Compile Include="Handler.cs" />
-    <Compile Include="PluginManager.cs" />
-    <Compile Include="PluginManagerForm.cs">
+    <Compile Include="ExtensionManager.cs" />
+    <Compile Include="ExtensionManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginManagerForm.Designer.cs">
-      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    <Compile Include="ExtensionManagerForm.Designer.cs">
+      <DependentUpon>ExtensionManagerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -109,8 +110,8 @@
     <EmbeddedResource Include="Debugger\Debugger.resx">
       <DependentUpon>Debugger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PluginManagerForm.resx">
-      <DependentUpon>PluginManagerForm.cs</DependentUpon>
+    <EmbeddedResource Include="ExtensionManagerForm.resx">
+      <DependentUpon>ExtensionManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -119,7 +120,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PluginsManager.addin" />
+    <None Include="ExtensionManager.addin" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\folder32.png" />
@@ -138,4 +139,7 @@
     <EmbeddedResource Include="Resources\refresh32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /F "$(SolutionDir)\ExtensionManager\ExtensionManager.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2022\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

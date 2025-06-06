@@ -7,9 +7,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using static PluginsManager.Const;
+using static ExtensionManager.Const;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public class CommandManager
     {
@@ -109,6 +109,7 @@ namespace PluginsManager
                 {
                     var assemblyBytes = File.ReadAllBytes(dllFile);
                     var assembly = Assembly.Load(assemblyBytes);
+                    //var assembly = AssemblyLoader.LoadAssemblyWithDependencies(dllFile);
 
                     IEnumerable<Type> externalCommands = assembly.GetTypes()
                         .Where(type => typeof(IExternalCommand).IsAssignableFrom(type) && !type.IsAbstract);

@@ -1,4 +1,4 @@
-﻿using PluginsManager;
+﻿using ExtensionManager;
 using System;
 using System.IO;
 using WixSharp;

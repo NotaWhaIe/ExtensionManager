@@ -1,0 +1,12 @@
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>ExtensionManager</Name>
+		<Assembly>C:\Users\usr6935744\source\repos\ExtensionManager\ExtensionManager\bin\Debug\ExtensionManager.dll</Assembly>
+		<!--<Assembly>ExtensionManager\ExtensionManager.dll</Assembly>-->
+		<AddInId>4AB79F62-F346-4AC4-8D98-A1345DA39693</AddInId>
+		<FullClassName>ExtensionManager.App</FullClassName>
+		<VendorId>MyId</VendorId>
+		<VendorDescription>Напиши о проблеме разработчику приложения: Никифоров Н.С</VendorDescription>
+		<Text>ExtensionManager</Text>
+	</AddIn>
+</RevitAddIns>

@@ -1,4 +1,4 @@
-﻿namespace PluginsManager
+﻿namespace ExtensionManager
 {
     public static class Const
     {
@@ -15,7 +15,7 @@
         }
         public static class UserConfigFile
         {
-            public static string FolderName = "PluginsManager";
+            public static string FolderName = "ExtensionManager";
             public static string Name = "config.xml";
             public static string XmlSettings = "Settings";
             public static string XmlFolderPath = "FolderPath";
@@ -27,17 +27,17 @@
         public static class AppProperties
         {
             public static string Guid = "4AB79F62-F346-4AC4-8D98-A1345DA39693";
-            public static string PanelName = "Plugins Manager";
+            public static string PanelName = "Extension Manager";
 
-            public static string ButtonNamePluginsManager = "Plugins\nManager";
-            public static string AssemblyNamePluginsManager = "PluginsManager.PluginManager";
-            public static string LargeImagePluginsManager = "PluginsManager.Resources.robot32.png";
-            public static string SmallImagePluginsManager = "PluginsManager.Resources.robot16.png";
+            public static string ButtonNameExtensionManager = "Extension\nManager";
+            public static string AssemblyNameExtensionManager = "ExtensionManager.ExtensionManager";
+            public static string LargeImageExtensionManager = "ExtensionManager.Resources.robot32.png";
+            public static string SmallImageExtensionManager = "ExtensionManager.Resources.robot16.png";
 
             public static string ButtonNameCommandinFolder = "Показать все\nкоманды в папке";
-            public static string AssemblyNameCommandinFolder = "PluginsManager.AllCommandsInFolder";
-            public static string LargeImageCommandinFolder = "PluginsManager.Resources.folderWheel32.png";
-            public static string SmallImageCommandinFolder = "PluginsManager.Resources.folderWheel16.png";
+            public static string AssemblyNameCommandinFolder = "ExtensionManager.AllCommandsInFolder";
+            public static string LargeImageCommandinFolder = "ExtensionManager.Resources.folderWheel32.png";
+            public static string SmallImageCommandinFolder = "ExtensionManager.Resources.folderWheel16.png";
         }
         public static class CmdConfigFile
         {

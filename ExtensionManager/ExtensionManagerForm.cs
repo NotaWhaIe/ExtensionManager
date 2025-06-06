@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
-    public partial class Debugger : Form
+    public partial class ExtensionManagerForm : Form
     {
-        public Debugger()
+        public ExtensionManagerForm()
         {
             InitializeComponent();
         }

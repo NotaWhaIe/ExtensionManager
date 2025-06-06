@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Commands>
+  <Command>
+    <CmdCode>Имя проекта.Имя класса</CmdCode>
+    <CmdTab>Название вкладки</CmdTab>
+    <CmdName>Имя для отображения</CmdName>
+    <CmdDescription>Описание команды</CmdDescription>
+    <CmdImage>image.png</CmdImage>
+  </Command>
+</Commands>

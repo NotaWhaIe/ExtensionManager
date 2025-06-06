@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using System;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public class Handler : IExternalEventHandler
     {

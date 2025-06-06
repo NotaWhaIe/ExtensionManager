@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     internal class App : IExternalApplication
     {
@@ -22,10 +22,10 @@ namespace PluginsManager
             
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            var btnDataPluginManager = new PushButtonData(Const.AppProperties.ButtonNamePluginsManager, Const.AppProperties.ButtonNamePluginsManager, assemblyPath, Const.AppProperties.AssemblyNamePluginsManager);
+            var btnDataPluginManager = new PushButtonData(Const.AppProperties.ButtonNameExtensionManager, Const.AppProperties.ButtonNameExtensionManager, assemblyPath, Const.AppProperties.AssemblyNameExtensionManager);
             var btnFamilyCatalog = panel.AddItem(btnDataPluginManager) as PushButton;
-            btnFamilyCatalog.LargeImage = GetImageFromResources(Const.AppProperties.LargeImagePluginsManager);
-            btnFamilyCatalog.Image = GetImageFromResources(Const.AppProperties.SmallImagePluginsManager);
+            btnFamilyCatalog.LargeImage = GetImageFromResources(Const.AppProperties.LargeImageExtensionManager);
+            btnFamilyCatalog.Image = GetImageFromResources(Const.AppProperties.SmallImageExtensionManager);
 
             var btnDataAllCommandsInFolder = new PushButtonData(Const.AppProperties.ButtonNameCommandinFolder, Const.AppProperties.ButtonNameCommandinFolder, assemblyPath, Const.AppProperties.AssemblyNameCommandinFolder);
             var btnAllCommandsInFolder = panel.AddItem(btnDataAllCommandsInFolder) as PushButton;

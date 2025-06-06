@@ -1,4 +1,4 @@
-﻿namespace PluginsManager
+﻿namespace ExtensionManager
 {
     public static class GlobComandName
     {

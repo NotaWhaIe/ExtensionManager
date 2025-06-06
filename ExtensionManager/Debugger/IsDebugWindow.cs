@@ -1,7 +1,7 @@
 ﻿using System.Data;
 
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public static class IsDebugWindow
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public class TempFiles
     {

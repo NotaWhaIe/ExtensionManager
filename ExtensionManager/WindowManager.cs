@@ -2,14 +2,14 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using static PluginsManager.Const;
+using static ExtensionManager.Const;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public class WindowManager
     {
         public ExternalEvent External_event { get; set; }
-        public PluginsManagerForm Window { get; set; }
+        public ExtensionManagerForm Window { get; set; }
         public CommandManager Command_manager { get; set; }
         public ConfigManager File_manager { get; set; }
         public UIApplication UiApp { get; set; }
@@ -22,7 +22,7 @@ namespace PluginsManager
             ConfigManager = configManager;
             UiApp = uiApp;
             External_event = Command_manager.ExternalEvent;
-            PluginsManagerForm window = new PluginsManagerForm();
+            ExtensionManagerForm window = new ExtensionManagerForm();
             Temp = tempFiles;
             Window = window;
             window.Text = $"Менеджер плагинов";
@@ -87,7 +87,7 @@ namespace PluginsManager
 
         private void OpenGitHub()
         {
-            System.Diagnostics.Process.Start("https://github.com/i-savelev/PluginsManager");
+            System.Diagnostics.Process.Start("https://github.com/NotaWhaIe/ExtensionManager");
             Window.Close();
         }
 

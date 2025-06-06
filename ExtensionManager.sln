@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginsManager", "PluginsManager\PluginsManager.csproj", "{F443DE8D-C791-4DC7-94CB-288E705ED749}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionManager", "ExtensionManager\ExtensionManager.csproj", "{F443DE8D-C791-4DC7-94CB-288E705ED749}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{415691B0-1282-47A8-A717-F24C3E58B824}"
 EndProject

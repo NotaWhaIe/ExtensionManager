@@ -6,9 +6,9 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="8bd7d784-31d5-4536-9fe2-416a2dd998b8" Name="Plugins Manager" Language="1033" Codepage="Windows-1252" Version="0.1.3" UpgradeCode="8bd7d784-31d5-4536-9fe2-416a2dc958b8" Manufacturer="ilyas">
+  <Product Id="8bd7d784-31d5-4536-9fe2-416a2dd998b8" Name="Extension Manager" Language="1033" Codepage="Windows-1252" Version="0.1.3" UpgradeCode="8bd7d784-31d5-4536-9fe2-416a2dc958b8" Manufacturer="usr6935744">
     <Package InstallerVersion="200" Compressed="yes" SummaryCodepage="Windows-1252" InstallPrivileges="limited" Languages="1033" />
-    <Media Id="1" Cabinet="Plugins20Manager.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="Extension20Manager.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="AppDataFolder" Name="AppDataFolder">
@@ -17,8 +17,8 @@
             <Directory Id="INSTALLDIR" Name="Addins">
               <Directory Id="_2024_" Name="2024">
 
-                <Component Id="Component.PluginsManager.addin_1412529645" Guid="8bd7d784-31d5-4536-9fe2-416afbee085e">
-                  <File Id="PluginsManager.addin_1412529645" Source="..\PluginsManager\PluginsManager.addin" />
+                <Component Id="Component.ExtensionManager.addin_193676428" Guid="8bd7d784-31d5-4536-9fe2-416a5aa7cf3e">
+                  <File Id="ExtensionManager.addin_193676428" Source="..\ExtensionManager\ExtensionManager.addin" />
                   <RemoveFolder Id="_2024_" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -26,10 +26,10 @@
                   </RegistryKey>
                 </Component>
 
-                <Directory Id="SUBFOLDER24" Name="PluginsManager">
+                <Directory Id="SUBFOLDER24" Name="ExtensionManager">
 
-                  <Component Id="Component.PluginsManager.dll_979162095" Guid="8bd7d784-31d5-4536-9fe2-416a975165aa">
-                    <File Id="PluginsManager.dll_979162095" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                  <Component Id="Component.SUBFOLDER24.EmptyDirectory" Guid="8bd7d784-31d5-4536-9fe2-416ad3f6f925">
+                    <CreateFolder />
                     <RemoveFolder Id="SUBFOLDER24" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -42,8 +42,8 @@
 
               <Directory Id="_2023_" Name="2023">
 
-                <Component Id="Component.PluginsManager.addin_1004759148" Guid="8bd7d784-31d5-4536-9fe2-416a4af2664b">
-                  <File Id="PluginsManager.addin_1004759148" Source="..\PluginsManager\PluginsManager.addin" />
+                <Component Id="Component.ExtensionManager.addin_995918828" Guid="8bd7d784-31d5-4536-9fe2-416ac918e733">
+                  <File Id="ExtensionManager.addin_995918828" Source="..\ExtensionManager\ExtensionManager.addin" />
                   <RemoveFolder Id="_2023_" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -51,10 +51,10 @@
                   </RegistryKey>
                 </Component>
 
-                <Directory Id="SUBFOLDER23" Name="PluginsManager">
+                <Directory Id="SUBFOLDER23" Name="ExtensionManager">
 
-                  <Component Id="Component.PluginsManager.dll_3364778367" Guid="8bd7d784-31d5-4536-9fe2-416a2e0cd254">
-                    <File Id="PluginsManager.dll_3364778367" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                  <Component Id="Component.SUBFOLDER23.EmptyDirectory" Guid="8bd7d784-31d5-4536-9fe2-416ad3f3ae06">
+                    <CreateFolder />
                     <RemoveFolder Id="SUBFOLDER23" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -67,8 +67,8 @@
 
               <Directory Id="_2022_" Name="2022">
 
-                <Component Id="Component.PluginsManager.addin_70931861" Guid="8bd7d784-31d5-4536-9fe2-416aeff6d0bb">
-                  <File Id="PluginsManager.addin_70931861" Source="..\PluginsManager\PluginsManager.addin" />
+                <Component Id="Component.ExtensionManager.addin_3315449481" Guid="8bd7d784-31d5-4536-9fe2-416a06564f8f">
+                  <File Id="ExtensionManager.addin_3315449481" Source="..\ExtensionManager\ExtensionManager.addin" />
                   <RemoveFolder Id="_2022_" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -76,10 +76,10 @@
                   </RegistryKey>
                 </Component>
 
-                <Directory Id="SUBFOLDER22" Name="PluginsManager">
+                <Directory Id="SUBFOLDER22" Name="ExtensionManager">
 
-                  <Component Id="Component.PluginsManager.dll_1993048656" Guid="8bd7d784-31d5-4536-9fe2-416a47311060">
-                    <File Id="PluginsManager.dll_1993048656" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                  <Component Id="Component.SUBFOLDER22.EmptyDirectory" Guid="8bd7d784-31d5-4536-9fe2-416ad3f7f1df">
+                    <CreateFolder />
                     <RemoveFolder Id="SUBFOLDER22" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -92,8 +92,8 @@
 
               <Directory Id="_2021_" Name="2021">
 
-                <Component Id="Component.PluginsManager.addin_1511678929" Guid="8bd7d784-31d5-4536-9fe2-416acb883c50">
-                  <File Id="PluginsManager.addin_1511678929" Source="..\PluginsManager\PluginsManager.addin" />
+                <Component Id="Component.ExtensionManager.addin_1382365007" Guid="8bd7d784-31d5-4536-9fe2-416acc01499c">
+                  <File Id="ExtensionManager.addin_1382365007" Source="..\ExtensionManager\ExtensionManager.addin" />
                   <RemoveFolder Id="_2021_" On="uninstall" />
 
                   <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -101,10 +101,10 @@
                   </RegistryKey>
                 </Component>
 
-                <Directory Id="SUBFOLDER21" Name="PluginsManager">
+                <Directory Id="SUBFOLDER21" Name="ExtensionManager">
 
-                  <Component Id="Component.PluginsManager.dll_2704920217" Guid="8bd7d784-31d5-4536-9fe2-416ac2e70b80">
-                    <File Id="PluginsManager.dll_2704920217" Source="..\PluginsManager\bin\Build\PluginsManager.dll" />
+                  <Component Id="Component.SUBFOLDER21.EmptyDirectory" Guid="8bd7d784-31d5-4536-9fe2-416ad3f4a7c0">
+                    <CreateFolder />
                     <RemoveFolder Id="SUBFOLDER21" On="uninstall" />
 
                     <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -116,6 +116,7 @@
               </Directory>
 
               <Component Id="INSTALLDIR" Guid="8bd7d784-31d5-4536-9fe2-416ad8e6bd90">
+                <CreateFolder />
                 <RemoveFolder Id="INSTALLDIR" On="uninstall" />
 
                 <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -126,6 +127,7 @@
             </Directory>
 
             <Component Id="Revit" Guid="8bd7d784-31d5-4536-9fe2-416aff00032c">
+              <CreateFolder />
               <RemoveFolder Id="Revit" On="uninstall" />
 
               <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -136,6 +138,7 @@
           </Directory>
 
           <Component Id="Autodesk" Guid="8bd7d784-31d5-4536-9fe2-416a9436fc32">
+            <CreateFolder />
             <RemoveFolder Id="Autodesk" On="uninstall" />
 
             <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
@@ -153,41 +156,47 @@
     <Feature Id="_2024__" Title="2024" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_1412529645" />
-      <ComponentRef Id="Component.PluginsManager.dll_979162095" />
-      <ComponentRef Id="Autodesk" />
-      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Component.ExtensionManager.addin_193676428" />
       <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Autodesk" />
     </Feature>
 
     <Feature Id="_2023__" Title="2023" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_1004759148" />
-      <ComponentRef Id="Component.PluginsManager.dll_3364778367" />
-      <ComponentRef Id="Autodesk" />
-      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Component.ExtensionManager.addin_995918828" />
       <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Autodesk" />
     </Feature>
 
     <Feature Id="_2022__" Title="2022" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_70931861" />
-      <ComponentRef Id="Component.PluginsManager.dll_1993048656" />
-      <ComponentRef Id="Autodesk" />
-      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Component.ExtensionManager.addin_3315449481" />
       <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Autodesk" />
     </Feature>
 
     <Feature Id="_2021__" Title="2021" Absent="allow" Level="1">
       <Condition Level="1"><![CDATA[PROP1 = 1]]></Condition>
 
-      <ComponentRef Id="Component.PluginsManager.addin_1511678929" />
-      <ComponentRef Id="Component.PluginsManager.dll_2704920217" />
-      <ComponentRef Id="Autodesk" />
-      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Component.ExtensionManager.addin_1382365007" />
       <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Autodesk" />
+    </Feature>
+
+    <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
+      <ComponentRef Id="Component.SUBFOLDER24.EmptyDirectory" />
+      <ComponentRef Id="Component.SUBFOLDER23.EmptyDirectory" />
+      <ComponentRef Id="Component.SUBFOLDER22.EmptyDirectory" />
+      <ComponentRef Id="Component.SUBFOLDER21.EmptyDirectory" />
+      <ComponentRef Id="INSTALLDIR" />
+      <ComponentRef Id="Revit" />
+      <ComponentRef Id="Autodesk" />
     </Feature>
 
   </Product>

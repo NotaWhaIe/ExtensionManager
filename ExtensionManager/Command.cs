@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
     public class Command
     {

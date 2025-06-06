@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using static PluginsManager.Const;
+using static ExtensionManager.Const;
 
-namespace PluginsManager
+namespace ExtensionManager
 {
    public class ConfigManager
     {   

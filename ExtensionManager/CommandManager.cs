@@ -17,16 +17,18 @@ namespace ExtensionManager
         public List<Type> AllTypes = new List<Type>();
         public List<Command> AllCommands = new List<Command>();
         public Dictionary<string, List<Command>> CommandsDictionary = new Dictionary<string, List<Command>>();
+        public string FolderDllPath { get; set; }
         public string FolderPath { get; set; }
         public ExternalEvent ExternalEvent { get; set; }
         public ConfigManager ConfigManager { get; set; }
 
-        public CommandManager(UIApplication uiApp, string folderPath, ConfigManager commandConfigManager)
+        public CommandManager(UIApplication uiApp, string folderDllPath, string folderPath, ConfigManager commandConfigManager)
         {
             UiApp = uiApp;
+            FolderDllPath = folderDllPath;
             FolderPath = folderPath;
             ConfigManager = commandConfigManager;
-            GetExternalCommandsFromAssembly(FolderPath);
+            GetExternalCommandsFromAssembly(FolderDllPath, FolderPath);
             Handler eventHandler = new Handler(this);
             ExternalEvent externalEvent = ExternalEvent.Create(eventHandler);
             ExternalEvent = externalEvent;
@@ -39,7 +41,7 @@ namespace ExtensionManager
             AllCommands.Clear();
             CommandsDictionary.Clear();
             FolderPath = folderPath;
-            GetExternalCommandsFromAssembly(FolderPath);
+            GetExternalCommandsFromAssembly(FolderDllPath,FolderPath);
             Handler eventHandler = new Handler(this);
             ExternalEvent externalEvent = ExternalEvent.Create(eventHandler);
             ExternalEvent = externalEvent;
@@ -95,21 +97,24 @@ namespace ExtensionManager
             return data;
         }
 
-        private void GetExternalCommandsFromAssembly(string folderPath)
+        private void GetExternalCommandsFromAssembly(string folderDllPath, string folderPath)
         {
             try
             {
                 var dllFiles = Directory.GetFiles(folderPath, "*.dll");
                 var subFolders = Directory.GetDirectories(folderPath);
+                ///тут добавить создание еще одной папки с тем же названием, но + гуид
                 foreach (var subFolder in subFolders)
                 {
                     dllFiles = dllFiles.Concat(Directory.GetFiles(subFolder, "*.dll")).ToArray();
                 }
                 foreach (var dllFile in dllFiles)
                 {
-                    var assemblyBytes = File.ReadAllBytes(dllFile);
-                    var assembly = Assembly.Load(assemblyBytes);
-                    //var assembly = AssemblyLoader.LoadAssemblyWithDependencies(dllFile);
+                    //var assemblyBytes = File.ReadAllBytes(dllFile);
+                    //var assembly = Assembly.Load(assemblyBytes);
+
+                    var assembly = new AssemblyLoader().LoadAssemblyWithDependencies(folderDllPath, dllFile);
+
 
                     IEnumerable<Type> externalCommands = assembly.GetTypes()
                         .Where(type => typeof(IExternalCommand).IsAssignableFrom(type) && !type.IsAbstract);

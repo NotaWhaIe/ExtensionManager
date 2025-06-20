@@ -46,6 +46,7 @@ namespace ExtensionManager
             {
                 Temp.CreateTemp(File_manager.FolderDllPath);
                 ConfigManager.GetDllSettings(Temp.TempDirectory);
+                //ConfigManager.GetDllSettings();
                 Command_manager.Refresh(Temp.TempDirectory);
                 Window.tabControl.TabPages.Clear();
                 CreateTabs();
@@ -55,6 +56,7 @@ namespace ExtensionManager
         private void Refrash()
         {
             Temp.CreateTemp(File_manager.FolderDllPath);
+            //ConfigManager.GetDllSettings();
             ConfigManager.GetDllSettings(Temp.TempDirectory);
             Command_manager.Refresh(Temp.TempDirectory);
             Window.tabControl.TabPages.Clear();

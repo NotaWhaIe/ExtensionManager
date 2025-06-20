@@ -12,7 +12,7 @@ namespace ExtensionManager
             UIApplication uiApp = commandData.Application;
             TempFiles tempFiles = new TempFiles();
             ConfigManager configManager = new ConfigManager(tempFiles);
-            CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
+            CommandManager commandManager = new CommandManager(uiApp, configManager.FolderDllPath, tempFiles.TempDirectory, configManager);
             WindowManager windowManager = new WindowManager(commandManager, configManager, configManager, tempFiles, uiApp);
 
             return Result.Succeeded;

@@ -10,6 +10,7 @@
     <RootNamespace>ExtensionManager</RootNamespace>
     <AssemblyName>ExtensionManager</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>12.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -62,8 +63,27 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=9.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.9.0.6\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=9.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.9.0.6\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -120,7 +140,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ExtensionManager.addin" />
+    <None Include="packages.config" />
+    <None Include="Sign-Cert.pfx" />
+    <None Include="Sign-Dll.ps1" />
+    <None Include="SignTool-10.0.22621.6-x64\makecat.exe.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\Microsoft.Windows.Build.Appx.AppxPackaging.dll.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\Microsoft.Windows.Build.Appx.AppxSip.dll.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\Microsoft.Windows.Build.Appx.OpcServices.dll.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\Microsoft.Windows.Build.Signing.mssign32.dll.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\Microsoft.Windows.Build.Signing.wintrust.dll.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\signtool.exe.manifest" />
+    <None Include="SignTool-10.0.22621.6-x64\wintrust.dll.ini" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\folder32.png" />
@@ -138,8 +170,23 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\refresh32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="SignTool-10.0.22621.6-x64\appxsip.dll" />
+    <Content Include="SignTool-10.0.22621.6-x64\cert2spc.exe" />
+    <Content Include="SignTool-10.0.22621.6-x64\dgssexwithfilehandlelib.dll" />
+    <Content Include="SignTool-10.0.22621.6-x64\makecat.exe" />
+    <Content Include="SignTool-10.0.22621.6-x64\mssign32.dll" />
+    <Content Include="SignTool-10.0.22621.6-x64\opcservices.dll" />
+    <Content Include="SignTool-10.0.22621.6-x64\signtool.exe" />
+    <Content Include="SignTool-10.0.22621.6-x64\wintrust.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /F "$(SolutionDir)\ExtensionManager\ExtensionManager.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2022\"</PostBuildEvent>
+    <PostBuildEvent>REM Вызов скрипта подписи
+powershell -NoProfile -ExecutionPolicy Bypass -File "$(ProjectDir)Sign-Dll.ps1"
+
+REM Копирование .addin-файла в папку Revit Addins
+xcopy /Y /F "$(ProjectDir)ExtensionManager.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2022\"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

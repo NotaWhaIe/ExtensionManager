@@ -1,106 +1,124 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Autodesk.Revit.UI;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 
 namespace ExtensionManager
 {
-    public static class AssemblyLoader
+    public class AssemblyLoader
     {
-        // Имя папки кеша формируется динамически: <ИмяВашейСборки> + "Temp"
-        private static readonly string CacheFolderName = Assembly.GetExecutingAssembly().GetName().Name + "Temp";
-        private static readonly string RootTempDirectory = Path.Combine(Path.GetTempPath(), CacheFolderName);
+        public string FolderDllPath { get; set; }
 
         /// <summary>
-        /// Загружает указанную сборку (dllFile) вместе со всеми зависимостями.
-        /// При загрузке создаётся уникальная временная папка внутри %TEMP%\<CacheFolderName>\,
-        /// куда копируются сама DLL и её зависимости.
+        /// Загружает указанную сборку (dllFile) вместе со всеми зависимостями,
+        /// предполагая, что все нужные файлы уже лежат в одной папке.
         /// </summary>
-        /// <param name="dllFile">Полный путь к файлу .dll, который необходимо загрузить.</param>
-        /// <returns>Инстанс System.Reflection.Assembly, загруженный из временного пути.</returns>
-        public static Assembly LoadAssemblyWithDependencies(string dllFile)
+        /// <param name="folderDllPath">Папка с зависимостями сборок.</param>
+        /// <param name="dllFile">Полный путь к файлу .dll для загрузки.</param>
+        /// <returns>Экземпляр System.Reflection.Assembly, загруженный из указанного пути.</returns>
+        public Assembly LoadAssemblyWithDependencies(string folderDllPath, string dllFile)
         {
+            FolderDllPath = folderDllPath;
+
             if (string.IsNullOrWhiteSpace(dllFile))
                 throw new ArgumentException("Путь к DLL не может быть пустым.", nameof(dllFile));
 
             if (!File.Exists(dllFile))
                 throw new FileNotFoundException($"Не найдена сборка по указанному пути: {dllFile}", dllFile);
 
-            // 1. Создаём уникальную временную директорию для этой конкретной загрузки
-            var tempDirectory = CreateUniqueTempDirectory();
+            // Папка, где лежит исходная сборка и её зависимости
+            var assemblyDirectory = Path.GetDirectoryName(dllFile)
+                                   ?? throw new InvalidOperationException("Не удалось определить директорию сборки.");
 
-            // 2. Копируем основную сборку в tempDirectory
-            var tempAssemblyPath = CopyAssemblyToTemp(dllFile, tempDirectory);
+            // Проверяем, не загружена ли уже такая же сборка (по имени и MVID)
+            var existing = FindLoadedByMvid(dllFile);
+            if (existing != null)
+                return existing; // Возвращаем уже загруженную сборку
 
-            // 3. Подписываемся на событие AssemblyResolve, чтобы ловить запросы зависимостей
-            SubscribeToAssemblyResolve(dllFile, tempDirectory);
+            // Подписываемся на событие загрузки зависимостей
+            SubscribeToAssemblyResolve(assemblyDirectory);
 
-            // 4. Загружаем саму сборку из временной папки и возвращаем
-            return Assembly.LoadFile(tempAssemblyPath);
+            // Загружаем саму сборку
+            return Assembly.LoadFile(dllFile);
         }
 
         /// <summary>
-        /// Создаёт новую уникальную папку внутри RootTempDirectory и возвращает её путь.
+        /// Ищет в домене приложение сборку с тем же простым именем и MVID.
+        /// Если найдена сборка с тем же именем, но другим MVID — выводит уведомление.
         /// </summary>
-        private static string CreateUniqueTempDirectory()
+        private Assembly FindLoadedByMvid(string dllFile)
         {
-            // Убедимся, что корневая папка существует
-            if (!Directory.Exists(RootTempDirectory))
+            string simpleName = Path.GetFileNameWithoutExtension(dllFile);
+            Guid newMvid = GetModuleMvid(dllFile);
+
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Directory.CreateDirectory(RootTempDirectory);
+                if (asm.GetName().Name.Equals(simpleName, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!string.IsNullOrEmpty(asm.Location))
+                    {
+                        Guid loadedMvid = GetModuleMvid(asm.Location);
+                        if (loadedMvid == newMvid)
+                            return asm; // Совпадение — возвращаем существующую сборку.
+                                        // Новую не загружаем
+                        //else
+                        //{
+                        //    // Выводим уведомление о различии MVID
+                        //    TaskDialog.Show(
+                        //        "Уведомление",
+                        //        $"Обнаружена сборка с тем же именем, но другим MVID.\n" +
+                        //        $"Файл: {Path.GetFileName(asm.Location)} (MVID={loadedMvid})\n" +
+                        //        $"Файл: {Path.GetFileName(dllFile)} (MVID={newMvid})"
+                        //    );
+                        //}
+                    }
+                }
             }
 
-            // Сгенерируем подпапку по GUID и создадим её
-            var tempDir = Path.Combine(RootTempDirectory, Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(tempDir);
-            return tempDir;
+            return null;
         }
 
         /// <summary>
-        /// Копирует файл сборки из sourcePath в targetDirectory и возвращает путь к скопированной DLL.
+        /// Считывает MVID модуля из PE-файла без загрузки сборки.
         /// </summary>
-        private static string CopyAssemblyToTemp(string sourcePath, string targetDirectory)
+        private static Guid GetModuleMvid(string assemblyPath)
         {
-            var fileName = Path.GetFileName(sourcePath);
-            var targetPath = Path.Combine(targetDirectory, fileName);
-            File.Copy(sourcePath, targetPath, overwrite: true);
-            return targetPath;
+            using var stream = File.OpenRead(assemblyPath);
+            using var peReader = new PEReader(stream);
+            var metadata = peReader.GetMetadataReader();
+            var moduleDef = metadata.GetModuleDefinition();
+            return metadata.GetGuid(moduleDef.Mvid);
         }
 
         /// <summary>
-        /// Подписывается на AppDomain.CurrentDomain.AssemblyResolve, чтобы в момент запроса зависимостей:
-        /// 1) Сначала искать их в tempDirectory.
-        /// 2) Если там нет — копировать из оригинальной папки (где лежит dllFile) и загружать.
+        /// Подписывается на AppDomain.CurrentDomain.AssemblyResolve, чтобы
+        /// при запросе зависимостей искать их в указанной директории.
         /// </summary>
-        private static void SubscribeToAssemblyResolve(string originalPath, string tempDirectory)
+        private void SubscribeToAssemblyResolve(string tempDirectory)
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
-                // Имя библиотеки без версии, культуры и т.п. + ".dll"
-                var assemblyName = new AssemblyName(args.Name).Name + ".dll";
+                var name = new AssemblyName(args.Name).Name + ".dll";
 
-                // 1) Смотрим в tempDirectory
-                var tempCandidate = Path.Combine(tempDirectory, assemblyName);
-                if (File.Exists(tempCandidate))
+                // 1) temp
+                var tempPath = Path.Combine(tempDirectory, name);
+                if (File.Exists(tempPath))
+                    return Assembly.LoadFile(tempPath);
+
+                // 2) original
+                var origPath = Path.Combine(FolderDllPath, name);
+                if (File.Exists(origPath))
                 {
-                    return Assembly.LoadFile(tempCandidate);
+                    // копируем зависимость в temp
+                    var copyTo = Path.Combine(tempDirectory, name);
+                    File.Copy(origPath, copyTo, overwrite: true);
+                    return Assembly.LoadFile(copyTo);
                 }
 
-                // 2) Если нет — пробуем найти рядом с оригинальным файлом
-                var originalDir = Path.GetDirectoryName(originalPath);
-                var originalCandidate = Path.Combine(originalDir, assemblyName);
-                if (File.Exists(originalCandidate))
-                {
-                    // Копируем зависимость в tempDirectory и загружаем
-                    var copiedPath = Path.Combine(tempDirectory, assemblyName);
-                    File.Copy(originalCandidate, copiedPath, overwrite: true);
-                    return Assembly.LoadFile(copiedPath);
-                }
-
-                // Если зависимость нигде не найдена — возвращаем null, и загрузка упадёт исключением
+                // не найдено
                 return null;
             };
         }

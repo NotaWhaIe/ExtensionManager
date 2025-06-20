@@ -1,39 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static ExtensionManager.Const;
 
 namespace ExtensionManager
 {
-   public class ConfigManager
-    {   
+    public class ConfigManager
+    {
         public string FolderDllPath { get; set; }
         public string ExceptionTabs = string.Empty;
         public string Post = UserConfigFile.DefaultPost;
-        public Dictionary<string, Dictionary<string, string>> CommamdConfigDictionary { get; set; }
-        public string TempDllFolderPath { get; set; }
-        public string UserConfigPath { get; set; }
-        public TempFiles TempFiles { get; set; }
+        public Dictionary<string, Dictionary<string, string>> CommamdConfigDictionary { get; private set; }
+        public string TempDllFolderPath { get; private set; }
+        public string UserConfigPath { get; private set; }
+        public TempFiles TempFiles { get; }
+
         public ConfigManager(TempFiles tempFiles)
         {
             TempFiles = tempFiles;
             GetConfigsPath();
             GetUserSettings();
+
+            // Копируем DLL и создаём командный конфиг в temp
+            try
+            {
+                TempFiles.CreateTemp(FolderDllPath);
+                CreateConfigFile(TempDllFolderPath);
+                CleanOldTempFolders();
+            }
+            catch (Exception ex)
+            {
+                // При ошибках копирования или очистки — логируем и продолжаем
+                Console.WriteLine($"Warning: error during temp setup: {ex.Message}");
+            }
+
+            // Загружаем настройки команд
             GetDllSettings(TempDllFolderPath);
         }
 
         private void GetConfigsPath()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pluginConfigPath = Path.Combine(appDataPath, UserConfigFile.FolderName);
-            if (!Directory.Exists(pluginConfigPath))
-            {
-                Directory.CreateDirectory(pluginConfigPath);
-            }
-            UserConfigPath =  Path.Combine(pluginConfigPath, UserConfigFile.Name);
-            TempDllFolderPath = Path.Combine(appDataPath, Const.UserConfigFile.FolderName, "temp");
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string root = Path.Combine(appData, UserConfigFile.FolderName);
+            if (!Directory.Exists(root))
+                Directory.CreateDirectory(root);
+
+            string imgFolder = Path.Combine(root, CmdConfigFile.ImageFolderName);
+            if (!Directory.Exists(imgFolder))
+                Directory.CreateDirectory(imgFolder);
+
+            UserConfigPath = Path.Combine(root, UserConfigFile.Name);
+            TempDllFolderPath = Path.Combine(root, "temp");
         }
 
         private void GetUserSettings()
@@ -41,131 +61,174 @@ namespace ExtensionManager
             if (!File.Exists(UserConfigPath))
             {
                 SetPathToUserConfigFileDialog();
+                return;
             }
-            else
-            {
-                XDocument xmlDoc = XDocument.Load(UserConfigPath);
-                FolderDllPath = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlFolderPath)?.Value ?? string.Empty;
-                ExceptionTabs = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
-                Post = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlPost)?.Value ?? string.Empty;
-            }
+
+            var xml = XDocument.Load(UserConfigPath);
+            FolderDllPath = xml.Element(UserConfigFile.XmlSettings)?
+                                .Element(UserConfigFile.XmlFolderPath)?.Value
+                              ?? string.Empty;
+            ExceptionTabs = xml.Element(UserConfigFile.XmlSettings)?
+                                .Element(UserConfigFile.XmlExceptionTabs)?.Value
+                              ?? string.Empty;
+            Post = xml.Element(UserConfigFile.XmlSettings)?
+                        .Element(UserConfigFile.XmlPost)?.Value
+                   ?? string.Empty;
         }
+
         public bool SetPathToUserConfigFileDialog()
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using var dlg = new OpenFileDialog
             {
-                if (File.Exists(UserConfigPath))
-                {
-                    XDocument xmlDoc = XDocument.Load(UserConfigPath);
-                    ExceptionTabs = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlExceptionTabs)?.Value ?? string.Empty;
-                    Post = xmlDoc.Element(Const.UserConfigFile.XmlSettings)?.Element(Const.UserConfigFile.XmlPost)?.Value ?? string.Empty;
-                }
+                Title = "Выберите папку с файлами .dll",
+                CheckFileExists = false,
+                CheckPathExists = true,
+                DereferenceLinks = true,
+                FileName = "Выбор папки",
+                Filter = "Все папки|*.*"
+            };
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return false;
 
-                openFileDialog.Title = "Выберете папку с файлами .dll";
-                openFileDialog.CheckFileExists = false; 
-                openFileDialog.CheckPathExists = true;  
-                openFileDialog.DereferenceLinks = true;  
-                openFileDialog.FileName = "Выбор папки"; 
-                openFileDialog.Filter = "Все папки|*.*"; 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string folderPath = Path.GetDirectoryName(openFileDialog.FileName);
-                    
-                    CreateConfigFile(folderPath);
-                    TempFiles.CreateTemp(folderPath);
+            FolderDllPath = Path.GetDirectoryName(dlg.FileName);
 
-                    FolderDllPath = folderPath;
-                    XElement settings = new XElement(Const.UserConfigFile.XmlSettings,
-                        new XElement(Const.UserConfigFile.XmlFolderPath, FolderDllPath),
-                        new XElement(Const.UserConfigFile.XmlExceptionTabs, ExceptionTabs),
-                        new XElement(Const.UserConfigFile.XmlPost, Post)
-                    );
-                    settings.Save(UserConfigPath);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+            try
+            {
+                TempFiles.CreateTemp(FolderDllPath);
+                CreateConfigFile(TempDllFolderPath);
+                CleanOldTempFolders();
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: error during temp setup: {ex.Message}");
+            }
+
+            var settings = new XElement(UserConfigFile.XmlSettings,
+                new XElement(UserConfigFile.XmlFolderPath, FolderDllPath),
+                new XElement(UserConfigFile.XmlExceptionTabs, ExceptionTabs),
+                new XElement(UserConfigFile.XmlPost, Post)
+            );
+            new XDocument(new XDeclaration("1.0", "utf-8", "yes"), settings)
+                .Save(UserConfigPath);
+
+            GetDllSettings(TempDllFolderPath);
+            return true;
         }
 
-        private static string GetConfigFilePath(string dllFolderPath)
+        public void RefreshPlugins()
         {
-            if (!string.IsNullOrEmpty(dllFolderPath))
+            try
             {
-                string pluginConfigPath = Path.Combine(dllFolderPath);
-                string pluginConfigPathImg = Path.Combine(dllFolderPath, CmdConfigFile.ImageFolderName);
-                if (!Directory.Exists(pluginConfigPath))
-                {
-                    Directory.CreateDirectory(pluginConfigPath);
-                }
-                if (!Directory.Exists(pluginConfigPathImg))
-                {
-                    Directory.CreateDirectory(pluginConfigPathImg);
-                }
-                return Path.Combine(pluginConfigPath, CmdConfigFile.Name);
+                if (Directory.Exists(TempDllFolderPath))
+                    Directory.Delete(TempDllFolderPath, true);
+
+                TempFiles.CreateTemp(FolderDllPath);
+                CreateConfigFile(TempDllFolderPath);
+                CleanOldTempFolders();
+                GetDllSettings(TempDllFolderPath);
             }
-            else
+            catch (Exception ex)
             {
-                return string.Empty;
+                Console.WriteLine($"Warning: error during refreshing plugins: {ex.Message}");
             }
         }
 
         public void GetDllSettings(string dllFolderPath)
         {
-            if (CommamdConfigDictionary != null)
-            {
-                CommamdConfigDictionary.Clear();
-            }
-
-            Dictionary<string, Dictionary<string, string>> commandConfigDictionary = new Dictionary<string, Dictionary<string, string>>();
-            var configFilePath = GetConfigFilePath(dllFolderPath);
+            CommamdConfigDictionary = new Dictionary<string, Dictionary<string, string>>();
+            string configPath = Path.Combine(dllFolderPath, CmdConfigFile.Name);
+            if (!File.Exists(configPath))
+                return;
 
             try
             {
-                XDocument xDoc = XDocument.Load(configFilePath);
-                var commands = xDoc.Descendants(CmdConfigFile.XmlCommand);
-                foreach (var command in commands)
+                var xdoc = XDocument.Load(configPath);
+                foreach (var cmd in xdoc.Descendants(CmdConfigFile.XmlCommand))
                 {
-                    string cmdCode = command.Element(CmdConfigFile.XmlCode[0])?.Value;
-                    string cmdTab = command.Element(CmdConfigFile.XmlTab[0])?.Value;
-                    string cmdName = command.Element(CmdConfigFile.XmlName[0])?.Value;
-                    string cmdDescription = command.Element(CmdConfigFile.XmlDescription[0])?.Value;
-                    string cmdImage = command.Element(CmdConfigFile.XmlImage[0])?.Value;
-                    if (!commandConfigDictionary.ContainsKey(cmdCode))
+                    string code = cmd.Element(CmdConfigFile.XmlCode[0])?.Value;
+                    if (string.IsNullOrEmpty(code))
+                        continue;
+
+                    CommamdConfigDictionary[code] = new Dictionary<string, string>
                     {
-                        commandConfigDictionary[cmdCode] = new Dictionary<string, string>()
-                            {
-                                {CmdConfigFile.XmlTab[0], cmdTab },
-                                {CmdConfigFile.XmlName[0], cmdName },
-                                {CmdConfigFile.XmlDescription[0], cmdDescription },
-                                {CmdConfigFile.XmlImage[0], cmdImage },
-                            };
-                    }
+                        { CmdConfigFile.XmlTab[0],         cmd.Element(CmdConfigFile.XmlTab[0])?.Value },
+                        { CmdConfigFile.XmlName[0],        cmd.Element(CmdConfigFile.XmlName[0])?.Value },
+                        { CmdConfigFile.XmlDescription[0], cmd.Element(CmdConfigFile.XmlDescription[0])?.Value },
+                        { CmdConfigFile.XmlImage[0],       cmd.Element(CmdConfigFile.XmlImage[0])?.Value }
+                    };
                 }
             }
-            catch { }
-            CommamdConfigDictionary = commandConfigDictionary;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: error loading config XML: {ex.Message}");
+            }
         }
 
-        public static void CreateConfigFile(string dllFolderPath)
+        private static void CreateConfigFile(string dllFolderPath)
         {
-            var configFilePath = GetConfigFilePath(dllFolderPath);
-            if (!File.Exists(configFilePath))
+            if (!Directory.Exists(dllFolderPath))
+                Directory.CreateDirectory(dllFolderPath);
+
+            string cfg = Path.Combine(dllFolderPath, CmdConfigFile.Name);
+            if (File.Exists(cfg))
+                return;
+
+            var root = new XElement(CmdConfigFile.XmlRoot);
+            var cmd = new XElement(CmdConfigFile.XmlCommand,
+                new XElement(CmdConfigFile.XmlCode[0], CmdConfigFile.XmlCode[1]),
+                new XElement(CmdConfigFile.XmlTab[0], CmdConfigFile.XmlTab[1]),
+                new XElement(CmdConfigFile.XmlName[0], CmdConfigFile.XmlName[1]),
+                new XElement(CmdConfigFile.XmlDescription[0], CmdConfigFile.XmlDescription[1]),
+                new XElement(CmdConfigFile.XmlImage[0], CmdConfigFile.XmlImage[1])
+            );
+            root.Add(cmd);
+            new XDocument(new XDeclaration("1.0", "utf-8", "yes"), root).Save(cfg);
+        }
+
+        private void CleanOldTempFolders()
+        {
+            if (!Directory.Exists(TempDllFolderPath))
+                return;
+
+            // Удаляем старые файлы, кроме config.xml
+            foreach (var file in Directory.GetFiles(TempDllFolderPath))
             {
-                XElement root = new XElement(CmdConfigFile.XmlRoot);
-                XElement cmdCommand = new XElement(CmdConfigFile.XmlCommand,
-                    new XElement(CmdConfigFile.XmlCode[0], CmdConfigFile.XmlCode[1]),
-                    new XElement(CmdConfigFile.XmlTab[0], CmdConfigFile.XmlTab[1]),
-                    new XElement(CmdConfigFile.XmlName[0], CmdConfigFile.XmlName[1]),
-                    new XElement(CmdConfigFile.XmlDescription[0], CmdConfigFile.XmlDescription[1]),
-                    new XElement(CmdConfigFile.XmlImage[0], CmdConfigFile.XmlImage[1])
-                    );
-                root.Add(cmdCommand);
-                XDocument xmlDoc = new XDocument(new XDeclaration("1.0", "UTF-8", null), root);
-                xmlDoc.Save(configFilePath);
+                if (Path.GetFileName(file).Equals(CmdConfigFile.Name, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                TryDeleteFile(file);
             }
+
+            // Очищаем старые подпапки, оставляя только самую новую
+            var subdirs = Directory.GetDirectories(TempDllFolderPath);
+            var newest = subdirs.OrderByDescending(d => Directory.GetLastWriteTime(d)).FirstOrDefault();
+            foreach (var dir in subdirs)
+            {
+                if (dir.Equals(newest, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                TryDeleteDirectory(dir);
+            }
+        }
+
+        private void TryDeleteFile(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch (IOException) { /* файл занят — пропускаем */ }
+            catch (UnauthorizedAccessException) { /* нет прав — пропускаем */ }
+        }
+
+        private void TryDeleteDirectory(string path)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+            }
+            catch (IOException) { /* занято — пропускаем */ }
+            catch (UnauthorizedAccessException) { /* нет прав — пропускаем */ }
         }
     }
 }

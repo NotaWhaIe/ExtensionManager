@@ -14,7 +14,7 @@
             public static string Image = "IS_IMAGE";
         }
         public static class UserConfigFile
-        {
+          {
             public static string FolderName = "ExtensionManager";
             public static string Name = "config.xml";
             public static string XmlSettings = "Settings";
@@ -26,7 +26,7 @@
         }
         public static class AppProperties
         {
-            public static string Guid = "4AB79F62-F346-4AC4-8D98-A1345DA39693";
+            public static string Guid = "7E402A4C-D611-45B3-995F-0CE2A4726A28";
             public static string PanelName = "Extension Manager";
 
             public static string ButtonNameExtensionManager = "Extension\nManager";

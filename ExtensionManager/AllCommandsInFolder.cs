@@ -12,7 +12,9 @@ namespace ExtensionManager
             UIApplication uiApp = commandData.Application;
             TempFiles tempFiles = new TempFiles();
             ConfigManager configManager = new ConfigManager(tempFiles);
-            CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
+            //CommandManager commandManager = new CommandManager(uiApp, tempFiles.TempDirectory, configManager);
+            CommandManager commandManager = new CommandManager(uiApp, configManager.FolderDllPath, tempFiles.TempDirectory, configManager);
+
             foreach (var type in commandManager.AllTypes)
             {
                 IsDebugWindow.AddRow(type.FullName);
